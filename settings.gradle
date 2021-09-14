@@ -6,14 +6,15 @@ findProject(':configuration-dispatch:manage-server')?.name = 'manage-server'
 
 include 'configuration-dispatch:proxy-server'
 findProject(':configuration-dispatch:proxy-server')?.name = 'proxy-server'
+
 include 'configuration-dispatch:hub-apiserver'
 findProject(':configuration-dispatch:hub-apiserver')?.name = 'hub-apiserver'
-include 'configuration-dispatch:hub-scheduler'
-findProject(':configuration-dispatch:hub-scheduler')?.name = 'untitled'
+
 include 'configuration-dispatch:hub-scheduler'
 findProject(':configuration-dispatch:hub-scheduler')?.name = 'hub-scheduler'
+
 include 'configuration-dispatch:hub-controller'
 findProject(':configuration-dispatch:hub-controller')?.name = 'hub-controller'
-include 'configuration-dispatch:hub-scheduler'
-findProject(':configuration-dispatch:hub-scheduler')?.name = 'hub-scheduler'
+include 'configuration-dispatch:hub-common'
+findProject(':configuration-dispatch:hub-common')?.name = 'hub-common'
 
