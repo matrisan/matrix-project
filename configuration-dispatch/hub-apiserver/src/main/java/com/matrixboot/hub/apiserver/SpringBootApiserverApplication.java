@@ -3,6 +3,7 @@ package com.matrixboot.hub.apiserver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * <p>
@@ -13,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 
 @Slf4j
+@EnableAspectJAutoProxy
 @SpringBootApplication
 public class SpringBootApiserverApplication {
 

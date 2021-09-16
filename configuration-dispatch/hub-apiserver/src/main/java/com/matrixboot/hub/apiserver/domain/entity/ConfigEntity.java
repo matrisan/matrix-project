@@ -1,6 +1,7 @@
 package com.matrixboot.hub.apiserver.domain.entity;
 
 import com.matrixboot.hub.apiserver.application.ConfigSyncCommand;
+import com.matrixboot.hub.common.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,13 +23,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * TODO
  * <p>
  * create in 2021/9/15 10:57 下午
  *
  * @author shishaodong
  * @version 0.0.1
  */
+@SuppressWarnings("unused")
 @Slf4j
 @Getter
 @Setter
@@ -40,7 +41,7 @@ import javax.persistence.Id;
 @DynamicInsert
 @DynamicUpdate
 @Entity
-public class ConfigEntity {
+public class ConfigEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,16 +58,23 @@ public class ConfigEntity {
 
     Integer status;
 
+    /**
+     * 新建事件
+     *
+     * @return ConfigSyncCommand
+     */
     @DomainEvents
     ConfigSyncCommand domainEvents() {
         log.info("domainEvents");
         return new ConfigSyncCommand();
     }
 
+    /**
+     * 事件回调
+     */
     @AfterDomainEventPublication
     void callbackMethod() {
         log.info("AfterDomainEventPublication");
     }
-
 
 }

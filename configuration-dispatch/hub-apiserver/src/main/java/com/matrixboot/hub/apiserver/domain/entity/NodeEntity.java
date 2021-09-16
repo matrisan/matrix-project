@@ -1,5 +1,6 @@
 package com.matrixboot.hub.apiserver.domain.entity;
 
+import com.matrixboot.hub.common.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,24 +39,21 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 @Entity
-public class NodeEntity {
+public class NodeEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @Column(nullable = false, columnDefinition = "CHAR(20) COMMENT 'domainName'")
-    List<String> sites;
-
-    @Column(nullable = false, columnDefinition = "CHAR(20) COMMENT 'domainName'")
     String name;
 
     @Column(nullable = false, columnDefinition = "CHAR(20) COMMENT 'domainName'")
-    String note;
+    List<String> sites;
+
 
     @Version
     Long version;
-
 
     public boolean match(ConfigEntity entity) {
         return false;
