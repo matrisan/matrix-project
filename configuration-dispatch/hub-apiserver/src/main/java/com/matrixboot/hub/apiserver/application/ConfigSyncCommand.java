@@ -25,9 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ConfigSyncCommand {
-
-    Long id;
+public class ConfigSyncCommand extends ConfigDeleteCommand {
 
     ConfigSyncTypeEnum configSyncType;
 

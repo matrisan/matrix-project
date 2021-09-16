@@ -1,5 +1,6 @@
 package com.matrixboot.hub.apiserver.domain.value;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,13 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CapacityValue {
 
     private Integer capacity;
-
-    public CapacityValue(Integer capacity) {
-        this.capacity = capacity;
-    }
-
 
 }

@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
- * TODO
+ * 发布数据扩展点
  * <p>
  * create in 2021/9/16 11:01 下午
  *
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ConfigNodePublishExt implements IConfigNodeExt {
+public class ConfigNodePublishProcessor implements IConfigNodeProcessor {
 
     @Override
     public void configPreProcessor(NodeEntity nodeEntity, ConfigEntity configEntity) {

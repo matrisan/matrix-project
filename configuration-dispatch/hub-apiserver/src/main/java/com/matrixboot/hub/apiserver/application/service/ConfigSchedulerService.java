@@ -7,7 +7,7 @@ import com.matrixboot.hub.apiserver.domain.entity.NodeEntity;
 import com.matrixboot.hub.apiserver.domain.repository.IConfigEntityRepository;
 import com.matrixboot.hub.apiserver.domain.repository.INodeEntityRepository;
 import com.matrixboot.hub.apiserver.infrastructure.calculation.INodeCalculate;
-import com.matrixboot.hub.apiserver.infrastructure.extension.IConfigNodeExt;
+import com.matrixboot.hub.apiserver.infrastructure.extension.IConfigNodeProcessor;
 import com.matrixboot.hub.apiserver.infrastructure.predicate.IPredicateStrategy;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,13 +35,13 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ConfigSchedulerService implements InitializingBean {
 
-    private final IConfigEntityRepository configEntityRepository;
+    private final INodeEntityRepository nodeRepository;
 
-    private final INodeEntityRepository nodeEntityRepository;
+    private final IConfigEntityRepository configRepository;
 
     /**
-     * 1.获取所有的节点;(预选节点)
-     * 2.查找能找到使用的节点;
+     * 1.获取所有的节点;
+     * 2.查找能找到使用的节点;(预选节点)
      * 3.对所有的节点打分;(优选节点)
      * 4.只保留前面两个节点;
      * 5.保存数据到数据库;
@@ -51,16 +51,16 @@ public class ConfigSchedulerService implements InitializingBean {
      */
     @Transactional(rollbackFor = Exception.class)
     public void syncConfig(@NotNull ConfigSyncCommand command) {
-        Optional<ConfigEntity> optional = configEntityRepository.findById(command.getId());
+        Optional<ConfigEntity> optional = configRepository.findById(command.getId());
         optional.ifPresent(configEntity ->
-                nodeEntityRepository.findAll().stream()
+                nodeRepository.findAll().stream()
                         .filter(nodeEntity -> predicateNode(nodeEntity, configEntity))
                         .map(nodeEntity -> calculateEachNodeScore(nodeEntity, configEntity))
                         .sorted((o1, o2) -> o2.getFirst().compareTo(o1.getFirst()))
                         .limit(2)
                         .map(Pair::getSecond)
-                        .peek(nodeEntity -> nodeEntity.addNewConfig(configEntity))
-                        .forEach(nodeEntity -> extension(nodeEntity, configEntity)));
+                        .forEach(nodeEntity -> executeProcessors(nodeEntity, configEntity))
+        );
     }
 
     /**
@@ -70,14 +70,12 @@ public class ConfigSchedulerService implements InitializingBean {
      */
     @Transactional(rollbackFor = Exception.class)
     public void deleteConfig(@NotNull ConfigDeleteCommand command) {
-        Optional<ConfigEntity> optional = configEntityRepository.findById(command.getId());
+        Optional<ConfigEntity> optional = configRepository.findById(command.getId());
         optional.ifPresent(configEntity -> {
             NodeEntity nodeEntity = configEntity.getNode();
-            extList.forEach(nodeExt -> nodeExt.configPostProcessor(nodeEntity, configEntity));
-            nodeEntity.deleteConfig(configEntity);
+            processors.forEach(processor -> processor.configPostProcessor(nodeEntity, configEntity));
         });
     }
-
 
     private final Map<String, IPredicateStrategy> strategyMap;
 
@@ -121,7 +119,7 @@ public class ConfigSchedulerService implements InitializingBean {
                 .calculate(nodeEntity, configEntity);
     }
 
-    private final List<IConfigNodeExt> extList;
+    private final List<IConfigNodeProcessor> processors;
 
     /**
      * 扩展点执行
@@ -129,8 +127,8 @@ public class ConfigSchedulerService implements InitializingBean {
      * @param nodeEntity   节点信息
      * @param configEntity 配置信息
      */
-    private void extension(NodeEntity nodeEntity, @NotNull ConfigEntity configEntity) {
-        extList.forEach(iConfigNodeExt -> iConfigNodeExt.configPreProcessor(nodeEntity, configEntity));
+    private void executeProcessors(NodeEntity nodeEntity, @NotNull ConfigEntity configEntity) {
+        processors.forEach(processor -> processor.configPreProcessor(nodeEntity, configEntity));
     }
 
     /**
@@ -138,6 +136,6 @@ public class ConfigSchedulerService implements InitializingBean {
      */
     @Override
     public void afterPropertiesSet() {
-        OrderComparator.sort(extList);
+        OrderComparator.sort(processors);
     }
 }

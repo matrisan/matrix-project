@@ -11,8 +11,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * TODO
- * <p>
+ * 配置创建命令
  * create in 2021/9/15 10:58 下午
  *
  * @author shishaodong

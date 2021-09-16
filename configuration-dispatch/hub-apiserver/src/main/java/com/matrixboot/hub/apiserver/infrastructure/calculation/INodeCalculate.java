@@ -4,6 +4,7 @@ import com.matrixboot.hub.apiserver.domain.entity.ConfigEntity;
 import com.matrixboot.hub.apiserver.domain.entity.NodeEntity;
 
 /**
+ * 优选策略
  * 优先级筛选节点
  * <p>
  * 节点和 配置 的打分器

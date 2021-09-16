@@ -13,7 +13,7 @@ import com.matrixboot.hub.apiserver.domain.entity.NodeEntity;
  * @author shishaodong
  * @version 0.0.1
  */
-public interface IConfigNodeExt {
+public interface IConfigNodeProcessor {
 
     /**
      * 扩展方法

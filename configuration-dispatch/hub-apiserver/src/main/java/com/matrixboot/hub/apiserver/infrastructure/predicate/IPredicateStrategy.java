@@ -4,7 +4,7 @@ import com.matrixboot.hub.apiserver.domain.entity.ConfigEntity;
 import com.matrixboot.hub.apiserver.domain.entity.NodeEntity;
 
 /**
- * 预选节点
+ * 预选策略
  * <p>
  * create in 2021/9/15 11:40 下午
  *

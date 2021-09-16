@@ -1,5 +1,6 @@
 package com.matrixboot.hub.apiserver.domain.value;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,15 +15,13 @@ import org.jetbrains.annotations.NotNull;
  */
 
 @Slf4j
+@Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UsedValue {
 
     @Getter
     private Integer used;
-
-    public UsedValue(Integer used) {
-        this.used = used;
-    }
 
     public void increase(@NotNull ResourceValue resource) {
         this.used = this.used + resource.getResource();

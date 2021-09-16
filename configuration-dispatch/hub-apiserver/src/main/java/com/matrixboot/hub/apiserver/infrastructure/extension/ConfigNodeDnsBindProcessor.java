@@ -16,15 +16,15 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ConfigNodeDnsBindExt implements IConfigNodeExt {
+public class ConfigNodeDnsBindProcessor implements IConfigNodeProcessor {
 
     @Override
     public void configPreProcessor(NodeEntity nodeEntity, ConfigEntity configEntity) {
-
+        System.out.println();
     }
 
     @Override
     public void configPostProcessor(NodeEntity nodeEntity, ConfigEntity configEntity) {
-
+        System.out.println();
     }
 }
