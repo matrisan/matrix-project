@@ -58,6 +58,9 @@ public class ConfigEntity extends BaseEntity {
 
     Integer status;
 
+    @Column(nullable = false, columnDefinition = "CHAR(20) COMMENT 'selector'")
+    String selector;
+
     /**
      * 新建事件
      *
