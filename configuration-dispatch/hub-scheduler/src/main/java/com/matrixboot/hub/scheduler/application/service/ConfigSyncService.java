@@ -18,6 +18,7 @@ public class ConfigSyncService {
 
     public void syncConfig(ConfigSyncCommand command) {
 
+
     }
 
 }

@@ -17,5 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 public class ConfigSyncCommand {
 
+    private Integer cpu;
+
+    private Integer memory;
+
+    private String domain;
+
 
 }
