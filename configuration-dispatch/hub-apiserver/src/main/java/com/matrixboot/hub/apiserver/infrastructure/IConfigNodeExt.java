@@ -4,24 +4,24 @@ import com.matrixboot.hub.apiserver.domain.entity.ConfigEntity;
 import com.matrixboot.hub.apiserver.domain.entity.NodeEntity;
 
 /**
- * 预选节点
+ * 配置同步的扩展节点
+ * 可以 DNS 绑定
+ *
  * <p>
- * create in 2021/9/15 11:40 下午
+ * create in 2021/9/16 8:48 下午
  *
  * @author shishaodong
  * @version 0.0.1
  */
+
 @FunctionalInterface
-public interface IPredicateStrategy {
+public interface IConfigNodeExt {
 
     /**
-     * 预选节点
-     * 加入候选节点的返回 true, 不加入候选节点的返回 false.
+     * 扩展方法
      *
      * @param nodeEntity   节点信息
      * @param configEntity 配置信息
-     * @return boolean
      */
-    boolean match(NodeEntity nodeEntity, ConfigEntity configEntity);
-
+    void extend(NodeEntity nodeEntity, ConfigEntity configEntity);
 }

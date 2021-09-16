@@ -6,17 +6,22 @@ import com.matrixboot.hub.apiserver.domain.entity.ConfigEntity;
 import com.matrixboot.hub.apiserver.domain.entity.NodeEntity;
 import com.matrixboot.hub.apiserver.domain.repository.IConfigEntityRepository;
 import com.matrixboot.hub.apiserver.domain.repository.INodeEntityRepository;
+import com.matrixboot.hub.apiserver.infrastructure.IConfigNodeExt;
 import com.matrixboot.hub.apiserver.infrastructure.IDistributeConfigStrategy;
 import com.matrixboot.hub.apiserver.infrastructure.INodeCalculate;
 import com.matrixboot.hub.apiserver.infrastructure.IPredicateStrategy;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.core.OrderComparator;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -30,7 +35,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class ConfigSchedulerService {
+public class ConfigSchedulerService implements InitializingBean {
 
     private final IConfigEntityRepository configEntityRepository;
 
@@ -51,15 +56,16 @@ public class ConfigSchedulerService {
     @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_UNCOMMITTED)
     public void sync(@NotNull ConfigSyncCommand command) {
         Optional<ConfigEntity> optional = configEntityRepository.findById(command.getId());
-        optional.ifPresent(entity ->
+        optional.ifPresent(configEntity ->
                 nodeEntityRepository.findAll().stream()
-                        .filter(nodeEntity -> predicateNode(entity, nodeEntity))
-                        .map(nodeEntity -> calculateEachNodeScore(entity, nodeEntity))
+                        .filter(nodeEntity -> predicateNode(nodeEntity, configEntity))
+                        .map(nodeEntity -> calculateEachNodeScore(nodeEntity, configEntity))
                         .sorted((o1, o2) -> o2.getFirst().compareTo(o1.getFirst()))
                         .limit(2)
                         .map(Pair::getSecond)
-                        .peek(nodeEntity -> nodeEntity.addNewConfig(entity))
-                        .forEach(nodeEntity -> distributeService.distribute(ConfigNodeFactory.from(nodeEntity, entity))));
+                        .peek(nodeEntity -> nodeEntity.addNewConfig(configEntity))
+                        .peek(nodeEntity -> extension(nodeEntity, configEntity))
+                        .forEach(nodeEntity -> distributeService.distribute(ConfigNodeFactory.from(nodeEntity, configEntity))));
     }
 
     private final Map<String, IPredicateStrategy> strategyMap;
@@ -72,7 +78,7 @@ public class ConfigSchedulerService {
      * @param nodeEntity   节点实体
      * @return boolean
      */
-    private boolean predicateNode(ConfigEntity configEntity, NodeEntity nodeEntity) {
+    private boolean predicateNode(@NotNull NodeEntity nodeEntity, ConfigEntity configEntity) {
         return nodeEntity.match(configEntity, strategyMap);
     }
 
@@ -83,18 +89,44 @@ public class ConfigSchedulerService {
      * @param nodeEntity   节点实体
      * @return Pair
      */
-    @NotNull
-    private Pair<Integer, NodeEntity> calculateEachNodeScore(ConfigEntity configEntity, NodeEntity nodeEntity) {
+    @Contract("null, _ -> fail")
+    private @NotNull Pair<Integer, NodeEntity> calculateEachNodeScore(NodeEntity nodeEntity, ConfigEntity configEntity) {
         return Pair.of(calculate(nodeEntity, configEntity), nodeEntity);
     }
 
-    private final Map<String, INodeCalculate> calculateMap;
-
     private final INodeCalculate defaultNodeCalculate;
 
+    private final Map<String, INodeCalculate> calculateMap;
+
+    /**
+     * 计算每个节点对应配置的分值
+     *
+     * @param nodeEntity   节点信息
+     * @param configEntity 配置信息
+     * @return int
+     */
     private int calculate(NodeEntity nodeEntity, @NotNull ConfigEntity configEntity) {
         return calculateMap.getOrDefault(configEntity.getSelector(), defaultNodeCalculate)
                 .calculate(nodeEntity, configEntity);
     }
 
+    private final List<IConfigNodeExt> extList;
+
+    /**
+     * 扩展点执行
+     *
+     * @param nodeEntity   节点信息
+     * @param configEntity 配置信息
+     */
+    private void extension(NodeEntity nodeEntity, @NotNull ConfigEntity configEntity) {
+        extList.forEach(iConfigNodeExt -> iConfigNodeExt.extend(nodeEntity, configEntity));
+    }
+
+    /**
+     * 对扩展点进行排序
+     */
+    @Override
+    public void afterPropertiesSet() {
+        OrderComparator.sort(extList);
+    }
 }

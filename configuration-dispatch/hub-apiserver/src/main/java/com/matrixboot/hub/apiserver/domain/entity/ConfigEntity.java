@@ -1,5 +1,6 @@
 package com.matrixboot.hub.apiserver.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.matrixboot.hub.apiserver.application.ConfigSyncCommand;
 import com.matrixboot.hub.common.entity.BaseEntity;
 import lombok.AccessLevel;
@@ -16,11 +17,15 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.domain.AfterDomainEventPublication;
 import org.springframework.data.domain.DomainEvents;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * <p>
@@ -60,6 +65,15 @@ public class ConfigEntity extends BaseEntity {
 
     @Column(nullable = false, columnDefinition = "CHAR(20) COMMENT 'selector'")
     String selector;
+
+    @Column(name = "node_id", insertable = false, updatable = false)
+    private Long nodeId;
+
+    @ToString.Exclude
+    @ManyToOne(targetEntity = NodeEntity.class, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "node_id", referencedColumnName = "id")
+    @JsonBackReference
+    private NodeEntity node;
 
     /**
      * 新建事件

@@ -11,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -72,5 +73,10 @@ public abstract class BaseEntity implements Serializable {
     @LastModifiedBy
     @Column(name = "last_modified_by", columnDefinition = "VARCHAR(100) COMMENT '最后更新人'")
     private String lastModifiedBy;
+
+
+    @Version
+    Long version;
+
 }
 

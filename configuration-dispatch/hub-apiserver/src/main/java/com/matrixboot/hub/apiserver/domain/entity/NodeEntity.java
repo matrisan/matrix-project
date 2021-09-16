@@ -1,5 +1,6 @@
 package com.matrixboot.hub.apiserver.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.matrixboot.hub.apiserver.domain.value.CapacityValue;
 import com.matrixboot.hub.apiserver.domain.value.ExclusiveValue;
 import com.matrixboot.hub.apiserver.domain.value.InventoryValue;
@@ -20,11 +21,12 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-import javax.persistence.Version;
 import java.util.List;
 import java.util.Map;
 
@@ -67,19 +69,20 @@ public class NodeEntity extends BaseEntity {
     @Transient
     InventoryValue inventory;
 
-    @Version
-    Long version;
+    @ToString.Exclude
+    @JsonManagedReference
+    @OneToMany(mappedBy = "node", fetch = FetchType.LAZY)
+    List<ConfigEntity> configList;
 
-
-    public boolean match(ConfigEntity entity, @NotNull Map<String, IPredicateStrategy> strategyMap) {
+    public boolean match(ConfigEntity config, @NotNull Map<String, IPredicateStrategy> strategyMap) {
         NodeEntity node = this;
         return strategyMap.values().stream()
-                .map(iPredicateStrategy -> iPredicateStrategy.match(node, entity))
+                .map(iPredicateStrategy -> iPredicateStrategy.match(node, config))
                 .anyMatch(aBoolean -> aBoolean = Boolean.TRUE);
     }
 
     public void addNewConfig(ConfigEntity entity) {
-
+        configList.add(entity);
     }
 
 }

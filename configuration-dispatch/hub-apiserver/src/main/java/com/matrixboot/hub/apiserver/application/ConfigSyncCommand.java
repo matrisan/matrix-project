@@ -29,4 +29,6 @@ public class ConfigSyncCommand {
 
     Long id;
 
+    ConfigSyncTypeEnum configSyncType;
+
 }

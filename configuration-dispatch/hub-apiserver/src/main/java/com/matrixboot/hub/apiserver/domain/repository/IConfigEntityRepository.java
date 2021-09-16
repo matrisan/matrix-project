@@ -2,10 +2,6 @@ package com.matrixboot.hub.apiserver.domain.repository;
 
 import com.matrixboot.hub.apiserver.domain.entity.ConfigEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
-
-import javax.persistence.LockModeType;
-import java.util.Optional;
 
 /**
  * <p>
@@ -16,8 +12,5 @@ import java.util.Optional;
  */
 
 public interface IConfigEntityRepository extends JpaRepository<ConfigEntity, Long> {
-
-    @Lock(LockModeType.WRITE)
-    Optional<ConfigEntity> findFirstByStatus(int status);
 
 }
