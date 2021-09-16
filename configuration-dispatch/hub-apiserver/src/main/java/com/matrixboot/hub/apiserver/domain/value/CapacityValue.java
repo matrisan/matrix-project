@@ -22,4 +22,6 @@ public class CapacityValue {
     public CapacityValue(Integer capacity) {
         this.capacity = capacity;
     }
+
+
 }

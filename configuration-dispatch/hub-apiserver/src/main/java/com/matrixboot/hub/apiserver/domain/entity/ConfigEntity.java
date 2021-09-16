@@ -2,6 +2,7 @@ package com.matrixboot.hub.apiserver.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.matrixboot.hub.apiserver.application.ConfigSyncCommand;
+import com.matrixboot.hub.apiserver.domain.value.ResourceValue;
 import com.matrixboot.hub.common.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -66,8 +67,10 @@ public class ConfigEntity extends BaseEntity {
     @Column(nullable = false, columnDefinition = "CHAR(20) COMMENT 'selector'")
     String selector;
 
+    ResourceValue resource;
+
     @Column(name = "node_id", insertable = false, updatable = false)
-    private Long nodeId;
+    Long nodeId;
 
     @ToString.Exclude
     @ManyToOne(targetEntity = NodeEntity.class, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)

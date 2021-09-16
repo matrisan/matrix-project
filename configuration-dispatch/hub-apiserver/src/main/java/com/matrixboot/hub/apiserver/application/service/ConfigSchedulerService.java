@@ -1,15 +1,14 @@
 package com.matrixboot.hub.apiserver.application.service;
 
-import com.matrixboot.hub.apiserver.application.ConfigNodeFactory;
+import com.matrixboot.hub.apiserver.application.ConfigDeleteCommand;
 import com.matrixboot.hub.apiserver.application.ConfigSyncCommand;
 import com.matrixboot.hub.apiserver.domain.entity.ConfigEntity;
 import com.matrixboot.hub.apiserver.domain.entity.NodeEntity;
 import com.matrixboot.hub.apiserver.domain.repository.IConfigEntityRepository;
 import com.matrixboot.hub.apiserver.domain.repository.INodeEntityRepository;
-import com.matrixboot.hub.apiserver.infrastructure.IConfigNodeExt;
-import com.matrixboot.hub.apiserver.infrastructure.IDistributeConfigStrategy;
-import com.matrixboot.hub.apiserver.infrastructure.INodeCalculate;
-import com.matrixboot.hub.apiserver.infrastructure.IPredicateStrategy;
+import com.matrixboot.hub.apiserver.infrastructure.calculation.INodeCalculate;
+import com.matrixboot.hub.apiserver.infrastructure.extension.IConfigNodeExt;
+import com.matrixboot.hub.apiserver.infrastructure.predicate.IPredicateStrategy;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.Contract;
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.OrderComparator;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -41,8 +39,6 @@ public class ConfigSchedulerService implements InitializingBean {
 
     private final INodeEntityRepository nodeEntityRepository;
 
-    private final IDistributeConfigStrategy distributeService;
-
     /**
      * 1.获取所有的节点;(预选节点)
      * 2.查找能找到使用的节点;
@@ -53,8 +49,8 @@ public class ConfigSchedulerService implements InitializingBean {
      *
      * @param command 同步命令
      */
-    @Transactional(rollbackFor = Exception.class, isolation = Isolation.READ_UNCOMMITTED)
-    public void sync(@NotNull ConfigSyncCommand command) {
+    @Transactional(rollbackFor = Exception.class)
+    public void syncConfig(@NotNull ConfigSyncCommand command) {
         Optional<ConfigEntity> optional = configEntityRepository.findById(command.getId());
         optional.ifPresent(configEntity ->
                 nodeEntityRepository.findAll().stream()
@@ -64,9 +60,24 @@ public class ConfigSchedulerService implements InitializingBean {
                         .limit(2)
                         .map(Pair::getSecond)
                         .peek(nodeEntity -> nodeEntity.addNewConfig(configEntity))
-                        .peek(nodeEntity -> extension(nodeEntity, configEntity))
-                        .forEach(nodeEntity -> distributeService.distribute(ConfigNodeFactory.from(nodeEntity, configEntity))));
+                        .forEach(nodeEntity -> extension(nodeEntity, configEntity)));
     }
+
+    /**
+     * 删除配置
+     *
+     * @param command 删除命令
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteConfig(@NotNull ConfigDeleteCommand command) {
+        Optional<ConfigEntity> optional = configEntityRepository.findById(command.getId());
+        optional.ifPresent(configEntity -> {
+            NodeEntity nodeEntity = configEntity.getNode();
+            extList.forEach(nodeExt -> nodeExt.configPostProcessor(nodeEntity, configEntity));
+            nodeEntity.deleteConfig(configEntity);
+        });
+    }
+
 
     private final Map<String, IPredicateStrategy> strategyMap;
 
@@ -119,7 +130,7 @@ public class ConfigSchedulerService implements InitializingBean {
      * @param configEntity 配置信息
      */
     private void extension(NodeEntity nodeEntity, @NotNull ConfigEntity configEntity) {
-        extList.forEach(iConfigNodeExt -> iConfigNodeExt.extend(nodeEntity, configEntity));
+        extList.forEach(iConfigNodeExt -> iConfigNodeExt.configPreProcessor(nodeEntity, configEntity));
     }
 
     /**

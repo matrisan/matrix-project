@@ -1,4 +1,4 @@
-package com.matrixboot.hub.apiserver.infrastructure;
+package com.matrixboot.hub.apiserver.infrastructure.telecommunication;
 
 import com.matrixboot.hub.apiserver.application.ConfigDistributeCommand;
 
@@ -19,5 +19,6 @@ public interface IDistributeConfigStrategy {
      * @param command 派发数据命令
      */
     void distribute(ConfigDistributeCommand command);
+
 
 }

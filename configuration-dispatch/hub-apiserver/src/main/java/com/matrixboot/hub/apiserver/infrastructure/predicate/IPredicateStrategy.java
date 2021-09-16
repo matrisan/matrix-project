@@ -1,4 +1,4 @@
-package com.matrixboot.hub.apiserver.infrastructure;
+package com.matrixboot.hub.apiserver.infrastructure.predicate;
 
 import com.matrixboot.hub.apiserver.domain.entity.ConfigEntity;
 import com.matrixboot.hub.apiserver.domain.entity.NodeEntity;

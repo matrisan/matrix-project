@@ -3,8 +3,8 @@ package com.matrixboot.hub.apiserver.domain.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.matrixboot.hub.apiserver.domain.value.CapacityValue;
 import com.matrixboot.hub.apiserver.domain.value.ExclusiveValue;
-import com.matrixboot.hub.apiserver.domain.value.InventoryValue;
-import com.matrixboot.hub.apiserver.infrastructure.IPredicateStrategy;
+import com.matrixboot.hub.apiserver.domain.value.UsedValue;
+import com.matrixboot.hub.apiserver.infrastructure.predicate.IPredicateStrategy;
 import com.matrixboot.hub.common.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -67,14 +67,14 @@ public class NodeEntity extends BaseEntity {
     CapacityValue capacity;
 
     @Transient
-    InventoryValue inventory;
+    UsedValue used;
 
     @ToString.Exclude
     @JsonManagedReference
     @OneToMany(mappedBy = "node", fetch = FetchType.LAZY)
     List<ConfigEntity> configList;
 
-    public boolean match(ConfigEntity config, @NotNull Map<String, IPredicateStrategy> strategyMap) {
+    public boolean match(@NotNull ConfigEntity config, @NotNull Map<String, IPredicateStrategy> strategyMap) {
         NodeEntity node = this;
         return strategyMap.values().stream()
                 .map(iPredicateStrategy -> iPredicateStrategy.match(node, config))
@@ -83,6 +83,16 @@ public class NodeEntity extends BaseEntity {
 
     public void addNewConfig(ConfigEntity entity) {
         configList.add(entity);
+        this.used.increase(entity.getResource());
+    }
+
+    public void deleteConfig(ConfigEntity entity) {
+        configList.remove(entity);
+        this.used.reduce(entity.getResource());
+    }
+
+    public boolean hasCapacity() {
+        return used.getUsed() >= capacity.getCapacity();
     }
 
 }

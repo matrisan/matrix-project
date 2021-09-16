@@ -1,4 +1,4 @@
-package com.matrixboot.hub.apiserver.infrastructure;
+package com.matrixboot.hub.apiserver.infrastructure.extension;
 
 import com.matrixboot.hub.apiserver.domain.entity.ConfigEntity;
 import com.matrixboot.hub.apiserver.domain.entity.NodeEntity;
@@ -13,8 +13,6 @@ import com.matrixboot.hub.apiserver.domain.entity.NodeEntity;
  * @author shishaodong
  * @version 0.0.1
  */
-
-@FunctionalInterface
 public interface IConfigNodeExt {
 
     /**
@@ -23,5 +21,16 @@ public interface IConfigNodeExt {
      * @param nodeEntity   节点信息
      * @param configEntity 配置信息
      */
-    void extend(NodeEntity nodeEntity, ConfigEntity configEntity);
+    void configPreProcessor(NodeEntity nodeEntity, ConfigEntity configEntity);
+
+
+    /**
+     * 回退/删除方法
+     *
+     * @param nodeEntity   节点信息
+     * @param configEntity 配置信息
+     */
+    void configPostProcessor(NodeEntity nodeEntity, ConfigEntity configEntity);
+
+
 }
