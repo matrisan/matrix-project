@@ -3,9 +3,6 @@ rootProject.name = 'matrix-project'
 include 'configuration-dispatch:manage-server'
 findProject(':configuration-dispatch:manage-server')?.name = 'manage-server'
 
-include 'configuration-dispatch:proxy-server'
-findProject(':configuration-dispatch:proxy-server')?.name = 'proxy-server'
-
 include 'configuration-dispatch:hub-apiserver'
 findProject(':configuration-dispatch:hub-apiserver')?.name = 'hub-apiserver'
 
@@ -26,4 +23,7 @@ findProject(':matrix-vector:matrix-vector-server-decision')?.name = 'matrix-vect
 
 include 'matrix-vector:matrix-vector-server-compute'
 findProject(':matrix-vector:matrix-vector-server-compute')?.name = 'matrix-vector-server-compute'
+
+include 'configuration-dispatch:hub-agent'
+findProject(':configuration-dispatch:hub-agent')?.name = 'hub-agent'
 
