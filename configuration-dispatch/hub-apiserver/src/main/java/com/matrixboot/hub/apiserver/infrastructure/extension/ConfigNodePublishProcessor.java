@@ -2,7 +2,10 @@ package com.matrixboot.hub.apiserver.infrastructure.extension;
 
 import com.matrixboot.hub.apiserver.domain.entity.ConfigEntity;
 import com.matrixboot.hub.apiserver.domain.entity.NodeEntity;
+import com.matrixboot.hub.apiserver.infrastructure.exception.ConfigSyncException;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.core.annotation.Order;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Component;
  */
 @SuppressWarnings("unused")
 @Slf4j
+@Order(3)
 @Component
 public class ConfigNodePublishProcessor implements IConfigNodeProcessor {
 
@@ -33,7 +37,6 @@ public class ConfigNodePublishProcessor implements IConfigNodeProcessor {
         log.info("删除下发的配置");
     }
 
-
     /**
      * 前置处理
      *
@@ -42,9 +45,9 @@ public class ConfigNodePublishProcessor implements IConfigNodeProcessor {
      * @param e            异常信息
      */
     @Recover
-    public void configPreProcessorRecover(NodeEntity nodeEntity, ConfigEntity configEntity, Exception e) {
+    public void configPreProcessorRecover(NodeEntity nodeEntity, ConfigEntity configEntity, @NotNull Exception e) {
         log.info("#health check# unhealthy: " + e.getMessage());
-
+        throw new ConfigSyncException();
     }
 
     /**
@@ -55,7 +58,8 @@ public class ConfigNodePublishProcessor implements IConfigNodeProcessor {
      * @param e            异常信息
      */
     @Recover
-    public void configPostProcessorRecover(NodeEntity nodeEntity, ConfigEntity configEntity, Exception e) {
+    public void configPostProcessorRecover(NodeEntity nodeEntity, ConfigEntity configEntity, @NotNull Exception e) {
         log.info("#health check# unhealthy: " + e.getMessage());
+        throw new ConfigSyncException();
     }
 }
