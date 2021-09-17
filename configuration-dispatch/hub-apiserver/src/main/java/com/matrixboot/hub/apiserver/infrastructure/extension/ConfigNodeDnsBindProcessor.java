@@ -20,11 +20,11 @@ public class ConfigNodeDnsBindProcessor implements IConfigNodeProcessor {
 
     @Override
     public void configPreProcessor(NodeEntity nodeEntity, ConfigEntity configEntity) {
-        System.out.println();
+        log.info("绑定 DNS");
     }
 
     @Override
     public void configPostProcessor(NodeEntity nodeEntity, ConfigEntity configEntity) {
-        System.out.println();
+        log.info("解绑 DNS");
     }
 }

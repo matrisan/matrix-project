@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
- * 发布数据扩展点
+ * 发布数据
  * <p>
  * create in 2021/9/16 11:01 下午
  *
@@ -20,11 +20,11 @@ public class ConfigNodePublishProcessor implements IConfigNodeProcessor {
 
     @Override
     public void configPreProcessor(NodeEntity nodeEntity, ConfigEntity configEntity) {
-
+        log.info("下发配置");
     }
 
     @Override
     public void configPostProcessor(NodeEntity nodeEntity, ConfigEntity configEntity) {
-
+        log.info("删除下发的配置");
     }
 }

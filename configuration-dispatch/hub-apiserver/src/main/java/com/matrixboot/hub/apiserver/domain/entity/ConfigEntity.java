@@ -3,6 +3,7 @@ package com.matrixboot.hub.apiserver.domain.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.matrixboot.hub.apiserver.application.ConfigSyncCommand;
 import com.matrixboot.hub.apiserver.domain.value.ResourceValue;
+import com.matrixboot.hub.apiserver.infrastructure.converter.ResourceConverter;
 import com.matrixboot.hub.common.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.DomainEvents;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -53,25 +55,50 @@ public class ConfigEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    /**
+     * 命名空间
+     */
     @Column(nullable = false, columnDefinition = "CHAR(20) COMMENT 'namespace'")
     String namespace;
 
+    /**
+     * 域名
+     */
     @Column(nullable = false, columnDefinition = "CHAR(20) COMMENT 'domain'")
     String domain;
 
+    /**
+     * 源站地址
+     */
     @Column(nullable = false, columnDefinition = "CHAR(20) COMMENT 'source'")
     String source;
 
+    /**
+     * 状态
+     */
     Integer status;
 
+    /**
+     * 节点选择器
+     */
     @Column(nullable = false, columnDefinition = "CHAR(20) COMMENT 'selector'")
     String selector;
 
+    /**
+     * 消耗资源信息
+     */
+    @Convert(converter = ResourceConverter.class)
     ResourceValue resource;
 
+    /**
+     * 节点的 ID
+     */
     @Column(name = "node_id", insertable = false, updatable = false)
     Long nodeId;
 
+    /**
+     * 节点详情
+     */
     @ToString.Exclude
     @ManyToOne(targetEntity = NodeEntity.class, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "node_id", referencedColumnName = "id")

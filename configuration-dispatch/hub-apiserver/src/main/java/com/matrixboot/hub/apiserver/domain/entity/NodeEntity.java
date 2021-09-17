@@ -3,7 +3,10 @@ package com.matrixboot.hub.apiserver.domain.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.matrixboot.hub.apiserver.domain.value.CapacityValue;
 import com.matrixboot.hub.apiserver.domain.value.ExclusiveValue;
-import com.matrixboot.hub.apiserver.domain.value.UsedValue;
+import com.matrixboot.hub.apiserver.domain.value.UsageValue;
+import com.matrixboot.hub.apiserver.infrastructure.converter.CapacityConverter;
+import com.matrixboot.hub.apiserver.infrastructure.converter.ExclusiveConverter;
+import com.matrixboot.hub.apiserver.infrastructure.converter.UsageConverter;
 import com.matrixboot.hub.apiserver.infrastructure.predicate.IPredicateStrategy;
 import com.matrixboot.hub.common.entity.BaseEntity;
 import lombok.AccessLevel;
@@ -20,13 +23,13 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 import java.util.List;
 import java.util.Map;
 
@@ -60,15 +63,27 @@ public class NodeEntity extends BaseEntity {
     @Column(nullable = false, columnDefinition = "CHAR(20) COMMENT 'sites'")
     List<String> sites;
 
-    @Transient
+    /**
+     * 节点独享信息,一般时候用在某些
+     */
+    @Convert(converter = ExclusiveConverter.class)
     ExclusiveValue exclusive;
 
-    @Transient
+    /**
+     * 容量
+     */
+    @Convert(converter = CapacityConverter.class)
     CapacityValue capacity;
 
-    @Transient
-    UsedValue used;
+    /**
+     * 使用情况
+     */
+    @Convert(converter = UsageConverter.class)
+    UsageValue usage;
 
+    /**
+     * 配置列表
+     */
     @ToString.Exclude
     @JsonManagedReference
     @OneToMany(mappedBy = "node", fetch = FetchType.LAZY)
@@ -81,18 +96,33 @@ public class NodeEntity extends BaseEntity {
                 .anyMatch(aBoolean -> aBoolean = Boolean.TRUE);
     }
 
-    public void addNewConfig(ConfigEntity entity) {
-        configList.add(entity);
-        this.used.increase(entity.getResource());
+    /**
+     * 新增配置
+     *
+     * @param config 配置信息
+     */
+    public void addNewConfig(ConfigEntity config) {
+        configList.add(config);
+        this.usage.increase(config.getResource());
     }
 
-    public void deleteConfig(ConfigEntity entity) {
-        configList.remove(entity);
-        this.used.reduce(entity.getResource());
+    /**
+     * 删除配置
+     *
+     * @param config 配置信息
+     */
+    public void deleteConfig(ConfigEntity config) {
+        configList.remove(config);
+        this.usage.reduce(config.getResource());
     }
 
+    /**
+     * 是否有剩余容量
+     *
+     * @return boolean
+     */
     public boolean hasCapacity() {
-        return used.getUsed() >= capacity.getCapacity();
+        return usage.getUsage() >= capacity.getCapacity();
     }
 
 }

@@ -52,29 +52,27 @@ public class ConfigSchedulerService implements InitializingBean {
     @Transactional(rollbackFor = Exception.class)
     public void syncConfig(@NotNull ConfigSyncCommand command) {
         Optional<ConfigEntity> optional = configRepository.findById(command.getId());
-        optional.ifPresent(configEntity ->
+        optional.ifPresent(config ->
                 nodeRepository.findAll().stream()
-                        .filter(nodeEntity -> predicateNode(nodeEntity, configEntity))
-                        .map(nodeEntity -> calculateEachNodeScore(nodeEntity, configEntity))
+                        .filter(node -> predicateNode(node, config))
+                        .map(node -> calculateEachNodeScore(node, config))
                         .sorted((o1, o2) -> o2.getFirst().compareTo(o1.getFirst()))
                         .limit(2)
                         .map(Pair::getSecond)
-                        .forEach(nodeEntity -> executeProcessors(nodeEntity, configEntity))
+                        .forEach(node -> executeProcessors(node, config))
         );
     }
 
     /**
      * 删除配置
+     * 遍历 configPostProcessor 处理器进行其他处理,如 DNS 解绑, 本地配置删除, 远程配置删除
      *
      * @param command 删除命令
      */
     @Transactional(rollbackFor = Exception.class)
     public void deleteConfig(@NotNull ConfigDeleteCommand command) {
         Optional<ConfigEntity> optional = configRepository.findById(command.getId());
-        optional.ifPresent(configEntity -> {
-            NodeEntity nodeEntity = configEntity.getNode();
-            processors.forEach(processor -> processor.configPostProcessor(nodeEntity, configEntity));
-        });
+        optional.ifPresent(config -> processors.forEach(processor -> processor.configPostProcessor(config.getNode(), config)));
     }
 
     private final Map<String, IPredicateStrategy> strategyMap;
@@ -83,24 +81,24 @@ public class ConfigSchedulerService implements InitializingBean {
      * 预选策略.
      * 只保留基本能用的节点
      *
-     * @param configEntity 配置实体
-     * @param nodeEntity   节点实体
+     * @param config 配置实体
+     * @param node   节点实体
      * @return boolean
      */
-    private boolean predicateNode(@NotNull NodeEntity nodeEntity, ConfigEntity configEntity) {
-        return nodeEntity.match(configEntity, strategyMap);
+    private boolean predicateNode(@NotNull NodeEntity node, ConfigEntity config) {
+        return node.match(config, strategyMap);
     }
 
     /**
      * 对节点进行打分
      *
-     * @param configEntity 配置实体
-     * @param nodeEntity   节点实体
+     * @param config 配置实体
+     * @param node   节点实体
      * @return Pair
      */
     @Contract("null, _ -> fail")
-    private @NotNull Pair<Integer, NodeEntity> calculateEachNodeScore(NodeEntity nodeEntity, ConfigEntity configEntity) {
-        return Pair.of(calculate(nodeEntity, configEntity), nodeEntity);
+    private @NotNull Pair<Integer, NodeEntity> calculateEachNodeScore(NodeEntity node, ConfigEntity config) {
+        return Pair.of(calculate(node, config), node);
     }
 
     private final INodeCalculate defaultNodeCalculate;
@@ -110,13 +108,13 @@ public class ConfigSchedulerService implements InitializingBean {
     /**
      * 计算每个节点对应配置的分值
      *
-     * @param nodeEntity   节点信息
-     * @param configEntity 配置信息
+     * @param node   节点信息
+     * @param config 配置信息
      * @return int
      */
-    private int calculate(NodeEntity nodeEntity, @NotNull ConfigEntity configEntity) {
-        return calculateMap.getOrDefault(configEntity.getSelector(), defaultNodeCalculate)
-                .calculate(nodeEntity, configEntity);
+    private int calculate(NodeEntity node, @NotNull ConfigEntity config) {
+        return calculateMap.getOrDefault(config.getSelector(), defaultNodeCalculate)
+                .calculate(node, config);
     }
 
     private final List<IConfigNodeProcessor> processors;
@@ -124,11 +122,11 @@ public class ConfigSchedulerService implements InitializingBean {
     /**
      * 扩展点执行
      *
-     * @param nodeEntity   节点信息
-     * @param configEntity 配置信息
+     * @param node   节点信息
+     * @param config 配置信息
      */
-    private void executeProcessors(NodeEntity nodeEntity, @NotNull ConfigEntity configEntity) {
-        processors.forEach(processor -> processor.configPreProcessor(nodeEntity, configEntity));
+    private void executeProcessors(NodeEntity node, @NotNull ConfigEntity config) {
+        processors.forEach(processor -> processor.configPreProcessor(node, config));
     }
 
     /**

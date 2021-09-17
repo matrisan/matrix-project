@@ -18,17 +18,17 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsedValue {
+public class UsageValue {
 
     @Getter
-    private Integer used;
+    private Integer usage;
 
     public void increase(@NotNull ResourceValue resource) {
-        this.used = this.used + resource.getResource();
+        this.usage = this.usage + resource.getResource();
     }
 
     public void reduce(@NotNull ResourceValue resource) {
-        this.used = this.used - resource.getResource();
+        this.usage = this.usage - resource.getResource();
     }
 
 }

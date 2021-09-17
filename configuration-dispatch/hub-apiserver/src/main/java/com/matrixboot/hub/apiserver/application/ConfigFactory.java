@@ -4,6 +4,7 @@ import com.matrixboot.hub.apiserver.domain.entity.ConfigEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <p>
@@ -17,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ConfigFactory {
 
-    public static ConfigEntity create(ConfigCreateCommand command) {
+    public static ConfigEntity create(@NotNull ConfigCreateCommand command) {
         return ConfigEntity.builder()
                 .namespace(command.getNamespace())
                 .domain(command.getDomain())
