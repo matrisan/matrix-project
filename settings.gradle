@@ -1,6 +1,5 @@
 rootProject.name = 'matrix-project'
 
-
 include 'configuration-dispatch:manage-server'
 findProject(':configuration-dispatch:manage-server')?.name = 'manage-server'
 
@@ -15,6 +14,16 @@ findProject(':configuration-dispatch:hub-scheduler')?.name = 'hub-scheduler'
 
 include 'configuration-dispatch:hub-controller'
 findProject(':configuration-dispatch:hub-controller')?.name = 'hub-controller'
+
 include 'configuration-dispatch:hub-common'
 findProject(':configuration-dispatch:hub-common')?.name = 'hub-common'
+
+include 'matrix-vector:matrix-vector-common'
+findProject(':matrix-vector:matrix-vector-common')?.name = 'matrix-vector-common'
+
+include 'matrix-vector:matrix-vector-server-decision'
+findProject(':matrix-vector:matrix-vector-server-decision')?.name = 'matrix-vector-server-decision'
+
+include 'matrix-vector:matrix-vector-server-compute'
+findProject(':matrix-vector:matrix-vector-server-compute')?.name = 'matrix-vector-server-compute'
 
