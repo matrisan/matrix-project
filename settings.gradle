@@ -26,4 +26,6 @@ findProject(':matrix-vector:matrix-vector-server-compute')?.name = 'matrix-vecto
 
 include 'configuration-dispatch:hub-agent'
 findProject(':configuration-dispatch:hub-agent')?.name = 'hub-agent'
+include 'matrix-vector:matrix-vector-server-manage'
+findProject(':matrix-vector:matrix-vector-server-manage')?.name = 'matrix-vector-server-manage'
 
