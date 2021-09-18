@@ -1,4 +1,4 @@
-package com.matrixboot.server.decision;
+package com.matrixboot.server.evaluate;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,9 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @version 0.0.1
  */
 @SpringBootApplication
-public class SpringBootDecisionApplication {
+public class SpringBootEvaluateApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringBootDecisionApplication.class, args);
+        SpringApplication.run(SpringBootEvaluateApplication.class, args);
     }
 }

@@ -1,4 +1,4 @@
-package com.matrixboot.server.decision.infrastructure.strategy;
+package com.matrixboot.server.evaluate.infrastructure.strategy;
 
 /**
  * <p>

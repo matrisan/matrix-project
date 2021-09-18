@@ -1,6 +1,6 @@
-package com.matrixboot.server.decision.infrastructure.interceptor;
+package com.matrixboot.server.evaluate.infrastructure.interceptor;
 
-import com.matrixboot.server.decision.domain.entity.DecisionEntity;
+import com.matrixboot.server.evaluate.domain.entity.EvaluateEntity;
 
 /**
  * <p>
@@ -17,6 +17,6 @@ public interface IDecisionInterceptor {
      *
      * @param entity 数据
      */
-    void invoke(DecisionEntity entity);
+    void invoke(EvaluateEntity entity);
 
 }

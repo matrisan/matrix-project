@@ -1,4 +1,4 @@
-package com.matrixboot.server.decision.application;
+package com.matrixboot.server.evaluate.application;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Getter
 @Setter
-public class DecisionCommand {
+public class EvaluateCommand {
 
     private EventMetaValue eventMeta;
 

@@ -1,8 +1,8 @@
-package com.matrixboot.server.decision.infrastructure.strategy;
+package com.matrixboot.server.evaluate.infrastructure.strategy;
 
-import com.matrixboot.server.decision.application.EvaluateResult;
-import com.matrixboot.server.decision.application.StrategyStatusEnum;
-import com.matrixboot.server.decision.domain.entity.DecisionEntity;
+import com.matrixboot.server.evaluate.application.EvaluateResult;
+import com.matrixboot.server.evaluate.application.StrategyStatusEnum;
+import com.matrixboot.server.evaluate.domain.entity.EvaluateEntity;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -35,6 +35,8 @@ public abstract class AbstractStrategy {
      * @param decision 数据
      * @return EvaluateResult
      */
-    public abstract EvaluateResult evaluate(DecisionEntity decision);
+    public abstract EvaluateResult evaluate(EvaluateEntity decision);
+
+    public abstract boolean isEnable();
 
 }

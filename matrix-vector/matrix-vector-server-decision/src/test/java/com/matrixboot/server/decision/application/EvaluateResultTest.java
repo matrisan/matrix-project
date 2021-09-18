@@ -1,5 +1,7 @@
 package com.matrixboot.server.decision.application;
 
+import com.matrixboot.server.evaluate.application.EvaluateResult;
+import com.matrixboot.server.evaluate.application.StrategyStatusEnum;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

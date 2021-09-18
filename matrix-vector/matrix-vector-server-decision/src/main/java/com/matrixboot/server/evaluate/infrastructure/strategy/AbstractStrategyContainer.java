@@ -1,4 +1,4 @@
-package com.matrixboot.server.decision.infrastructure.strategy;
+package com.matrixboot.server.evaluate.infrastructure.strategy;
 
 import lombok.extern.slf4j.Slf4j;
 

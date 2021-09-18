@@ -1,9 +1,10 @@
-package com.matrixboot.server.decision.infrastructure;
+package com.matrixboot.server.evaluate.infrastructure.context;
 
-import com.matrixboot.server.decision.application.EvaluateResult;
+import com.matrixboot.server.evaluate.application.EvaluateResult;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -14,7 +15,20 @@ import java.util.Optional;
  * @version 0.0.1
  */
 
-public interface IEvaluateResultContainer {
+public interface IEvaluateContext {
+
+    /**
+     * 关联变量
+     */
+    void associateCompute();
+
+    Map<String, Integer> getAllCompute();
+
+    /**
+     * 关联策略
+     */
+    void associateStrategy();
+
 
     /**
      * 添加策略结果

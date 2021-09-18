@@ -1,4 +1,4 @@
-package com.matrixboot.server.decision.application;
+package com.matrixboot.server.evaluate.application;
 
 /**
  * <p>

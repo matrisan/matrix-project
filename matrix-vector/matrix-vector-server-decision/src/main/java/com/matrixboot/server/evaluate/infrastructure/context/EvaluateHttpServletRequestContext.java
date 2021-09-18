@@ -1,6 +1,6 @@
-package com.matrixboot.server.decision.infrastructure;
+package com.matrixboot.server.evaluate.infrastructure.context;
 
-import com.matrixboot.server.decision.application.EvaluateResult;
+import com.matrixboot.server.evaluate.application.EvaluateResult;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ import java.util.Optional;
 
 @Slf4j
 @Component
-public class EvaluateResultHttpServletRequestContainer implements IEvaluateResultContainer {
+public class EvaluateHttpServletRequestContext implements IEvaluateContext {
 
     /**
      * 存放最终的结果的 key
@@ -51,6 +52,22 @@ public class EvaluateResultHttpServletRequestContainer implements IEvaluateResul
 
     @Resource
     private HttpServletRequest request;
+
+
+    @Override
+    public void associateCompute() {
+
+    }
+
+    @Override
+    public Map<String, Integer> getAllCompute() {
+        return null;
+    }
+
+    @Override
+    public void associateStrategy() {
+
+    }
 
     @Override
     public void addEvaluateResult(@NotNull EvaluateResult result) {

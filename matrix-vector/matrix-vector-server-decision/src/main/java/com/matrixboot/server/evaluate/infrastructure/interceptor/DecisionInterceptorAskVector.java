@@ -1,11 +1,9 @@
-package com.matrixboot.server.decision.infrastructure.interceptor;
+package com.matrixboot.server.evaluate.infrastructure.interceptor;
 
-import com.matrixboot.server.decision.domain.entity.DecisionEntity;
+import com.matrixboot.server.evaluate.domain.entity.EvaluateEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 
 /**
  * <p>
@@ -16,12 +14,13 @@ import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
  */
 
 @Slf4j
-@Order(HIGHEST_PRECEDENCE)
+@Order(11)
 @Component
 public class DecisionInterceptorAskVector implements IDecisionInterceptor {
 
+
     @Override
-    public void invoke(DecisionEntity entity) {
+    public void invoke(EvaluateEntity entity) {
         log.info("查询向量");
     }
 }
