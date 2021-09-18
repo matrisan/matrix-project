@@ -30,7 +30,7 @@ public class EvaluateService implements InitializingBean {
 
     private final IEventIdGenerator generator;
 
-    public void decision(EvaluateCommand command) {
+    public void evaluate(EvaluateCommand command) {
         EvaluateEntity decision = EvaluateFactory.from(command, generator);
         interceptors.forEach(interceptor -> interceptor.invoke(decision));
     }

@@ -18,14 +18,15 @@ findProject(':configuration-dispatch:hub-common')?.name = 'hub-common'
 include 'matrix-vector:matrix-vector-common'
 findProject(':matrix-vector:matrix-vector-common')?.name = 'matrix-vector-common'
 
-include 'matrix-vector:matrix-vector-server-decision'
-findProject(':matrix-vector:matrix-vector-server-decision')?.name = 'matrix-vector-server-decision'
+include 'matrix-vector:matrix-vector-server-evaluate'
+findProject(':matrix-vector:matrix-vector-server-evaluate')?.name = 'matrix-vector-server-evaluate'
 
 include 'matrix-vector:matrix-vector-server-compute'
 findProject(':matrix-vector:matrix-vector-server-compute')?.name = 'matrix-vector-server-compute'
 
 include 'configuration-dispatch:hub-agent'
 findProject(':configuration-dispatch:hub-agent')?.name = 'hub-agent'
+
 include 'matrix-vector:matrix-vector-server-manage'
 findProject(':matrix-vector:matrix-vector-server-manage')?.name = 'matrix-vector-server-manage'
 
