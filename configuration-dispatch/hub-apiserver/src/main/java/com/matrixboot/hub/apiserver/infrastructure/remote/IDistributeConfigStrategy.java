@@ -1,4 +1,4 @@
-package com.matrixboot.hub.apiserver.infrastructure.telecommunication;
+package com.matrixboot.hub.apiserver.infrastructure.remote;
 
 import com.matrixboot.hub.apiserver.application.ConfigDistributeCommand;
 
