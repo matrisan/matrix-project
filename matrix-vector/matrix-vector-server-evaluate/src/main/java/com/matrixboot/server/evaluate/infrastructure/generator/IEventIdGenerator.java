@@ -1,4 +1,4 @@
-package com.matrixboot.server.evaluate.infrastructure;
+package com.matrixboot.server.evaluate.infrastructure.generator;
 
 /**
  * <p>
@@ -12,7 +12,7 @@ package com.matrixboot.server.evaluate.infrastructure;
 public interface IEventIdGenerator {
 
     /**
-     * 生成 ID
+     * 生成事件的 ID
      *
      * @return String
      */

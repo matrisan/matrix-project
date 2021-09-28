@@ -1,7 +1,7 @@
 package com.matrixboot.server.evaluate.application;
 
 import com.matrixboot.server.evaluate.domain.entity.EvaluateEntity;
-import com.matrixboot.server.evaluate.infrastructure.IEventIdGenerator;
+import com.matrixboot.server.evaluate.infrastructure.generator.IEventIdGenerator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

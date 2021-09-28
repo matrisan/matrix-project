@@ -1,0 +1,16 @@
+POST http://localhost:8080/evaluate
+Content-Type: application/json
+
+{
+  "eventMeta": {
+    "projectId": "AAAAAA",
+    "operateId": "BBBBBB"
+  },
+  "eventData": {
+    "phone": "18888",
+    "ip": "127.0.0.1",
+    "mac": "mmmm"
+  }
+}
+
+###

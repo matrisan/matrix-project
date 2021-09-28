@@ -96,6 +96,15 @@ public class EvaluateHttpServletRequestContext implements IEvaluateContext {
     }
 
     @Override
+    public EvaluateResult getFinalResult() {
+        Object attribute = request.getAttribute(RESULT_KEY);
+        if (Objects.isNull(attribute)) {
+            return EvaluateResult.defaultEvaluateResult();
+        }
+        return ((EvaluateResult) attribute);
+    }
+
+    @Override
     public List<EvaluateResult> getResultEnable() {
         return getEvaluateResult(RESULT_ENABLE_KEY);
     }

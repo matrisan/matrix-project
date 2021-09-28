@@ -4,32 +4,39 @@ plugins {
     id 'java'
 }
 
-group = 'com.matrixboot'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
-allprojects {
-    repositories {
-        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
-        mavenCentral()
-    }
-}
-
-
 ext {
     set('springCloudVersion', "2020.0.3")
     set('testcontainersVersion', "1.16.0")
 }
 
-subprojects {
+allprojects {
 
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'java'
 
     group = 'com.matrixboot'
-    version = '0.0.1'
+    version = '0.0.1-SNAPSHOT'
     sourceCompatibility = '11'
+
+    repositories {
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
+        mavenCentral()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+subprojects {
 
     dependencies {
 //    implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -49,14 +56,5 @@ subprojects {
 //    testImplementation 'org.testcontainers:mysql'
     }
 
-    dependencyManagement {
-        imports {
-            mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-        }
-    }
 
-    test {
-        useJUnitPlatform()
-    }
 }

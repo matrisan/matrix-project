@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
- * TODO
  * <p>
  * create in 2021/9/19 12:44 上午
  *
@@ -27,6 +26,6 @@ public class DecisionInitStrategyInterceptor implements IDecisionInterceptor {
 
     @Override
     public void invoke(EvaluateEntity entity) {
-
+        log.info("初始化策略");
     }
 }

@@ -47,6 +47,13 @@ public interface IEvaluateContext {
     Optional<EvaluateResult> getReturnResult();
 
     /**
+     * 获取最终的结果
+     *
+     * @return EvaluateResult
+     */
+    EvaluateResult getFinalResult();
+
+    /**
      * 启用的规则
      *
      * @return List

@@ -30,3 +30,14 @@ findProject(':configuration-dispatch:hub-agent')?.name = 'hub-agent'
 include 'matrix-vector:matrix-vector-server-manage'
 findProject(':matrix-vector:matrix-vector-server-manage')?.name = 'matrix-vector-server-manage'
 
+
+
+include 'matrix-config:matrix-config-manager'
+findProject(':matrix-config:matrix-config-manager')?.name = 'matrix-config-manager'
+include 'matrix-config:matrix-config-monitor'
+findProject(':matrix-config:matrix-config-monitor')?.name = 'matrix-config-monitor'
+include 'matrix-config:matrix-config-common'
+findProject(':matrix-config:matrix-config-common')?.name = 'matrix-config-common'
+include 'matrix-config:matrix-config-controller'
+findProject(':matrix-config:matrix-config-controller')?.name = 'matrix-config-controller'
+
