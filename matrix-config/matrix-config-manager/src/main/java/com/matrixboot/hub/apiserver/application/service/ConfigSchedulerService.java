@@ -79,7 +79,11 @@ public class ConfigSchedulerService implements InitializingBean {
 
     /**
      * 预选策略.
-     * 只保留基本能用的节点
+     * 只保留基本能用的节点,
+     * 为什么要预选策略?
+     * 1.防止有些节点暂时不可以用;
+     * 2.防止有些节点是有些大网站独享的;
+     * 3.方式有些节点是有特殊用途,如预发布等.
      *
      * @param config 配置实体
      * @param node   节点实体
@@ -114,8 +118,7 @@ public class ConfigSchedulerService implements InitializingBean {
      * @return int
      */
     private int calculate(NodeEntity node, @NotNull ConfigEntity config) {
-        return calculateMap.getOrDefault(config.getSelector(), defaultNodeCalculate)
-                .calculate(node, config);
+        return calculateMap.getOrDefault(config.getSelector(), defaultNodeCalculate).calculate(node, config);
     }
 
     private final List<IConfigNodeProcessor> processors;

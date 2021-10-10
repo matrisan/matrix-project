@@ -40,4 +40,5 @@ include 'matrix-config:matrix-config-common'
 findProject(':matrix-config:matrix-config-common')?.name = 'matrix-config-common'
 include 'matrix-config:matrix-config-controller'
 findProject(':matrix-config:matrix-config-controller')?.name = 'matrix-config-controller'
+include 'matrix-octopus'
 
