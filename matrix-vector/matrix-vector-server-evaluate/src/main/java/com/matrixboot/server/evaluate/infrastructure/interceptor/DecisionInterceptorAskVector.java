@@ -11,6 +11,8 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 请求所有的变量
+ *
  * <p>
  * create in 2021/9/18 4:40 下午
  *

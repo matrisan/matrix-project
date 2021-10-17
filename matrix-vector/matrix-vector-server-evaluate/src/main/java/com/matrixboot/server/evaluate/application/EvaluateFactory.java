@@ -1,7 +1,6 @@
 package com.matrixboot.server.evaluate.application;
 
 import com.matrixboot.server.evaluate.domain.entity.EvaluateEntity;
-import com.matrixboot.server.evaluate.infrastructure.generator.IEventIdGenerator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +18,8 @@ import org.jetbrains.annotations.NotNull;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EvaluateFactory {
 
-    public static EvaluateEntity from(@NotNull EvaluateCommand command, @NotNull IEventIdGenerator generator) {
+    public static EvaluateEntity from(@NotNull EvaluateCommand command) {
         return EvaluateEntity.builder()
-                .id(generator.getId())
                 .eventMeta(command.getEventMeta())
                 .eventData(command.getEventData())
                 .build();

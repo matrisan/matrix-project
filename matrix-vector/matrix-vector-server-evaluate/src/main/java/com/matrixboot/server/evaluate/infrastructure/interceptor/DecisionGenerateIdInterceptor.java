@@ -1,31 +1,30 @@
 package com.matrixboot.server.evaluate.infrastructure.interceptor;
 
 import com.matrixboot.server.evaluate.domain.entity.EvaluateEntity;
-import com.matrixboot.server.evaluate.infrastructure.context.AbstractEvaluateContext;
+import com.matrixboot.server.evaluate.infrastructure.generator.IEventIdGenerator;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-
 /**
+ * TODO
  * <p>
- * create in 2021/9/19 12:44 上午
+ * create in 2021/10/16 11:01 下午
  *
  * @author shishaodong
  * @version 0.0.1
  */
-
 @Slf4j
-@Order(1)
+@Order(0)
 @Component
-public class DecisionInitStrategyInterceptor implements IDecisionInterceptor {
+@AllArgsConstructor
+public class DecisionGenerateIdInterceptor implements IDecisionInterceptor {
 
-    @Resource
-    private AbstractEvaluateContext context;
+    private final IEventIdGenerator generator;
 
     @Override
     public void invoke(EvaluateEntity entity) {
-        log.info("初始化策略");
+        entity.setId(generator.getId());
     }
 }

@@ -2,6 +2,7 @@ package com.matrixboot.server.evaluate.domain.entity;
 
 import com.matrixboot.server.evaluate.application.EventDataValue;
 import com.matrixboot.server.evaluate.application.EventMetaValue;
+import com.matrixboot.strategy.ScenarioMetaEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,7 +26,7 @@ import java.util.concurrent.CountDownLatch;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EvaluateEntity {
+public class EvaluateEntity extends ScenarioMetaEntity {
 
     private String id;
 
@@ -34,6 +35,5 @@ public class EvaluateEntity {
     private EventDataValue eventData;
 
     private CountDownLatch latch = new CountDownLatch(1);
-
 
 }

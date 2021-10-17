@@ -8,6 +8,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 //    implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix:2.2.9.RELEASE'
     implementation 'org.apache.commons:commons-lang3'
     implementation 'org.jetbrains:annotations:22.0.0'
     compileOnly 'org.projectlombok:lombok'
@@ -18,4 +19,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.testcontainers:junit-jupiter'
 //    testImplementation 'org.testcontainers:mysql'
+    implementation 'org.jooq:joor:0.9.14'
+
 }

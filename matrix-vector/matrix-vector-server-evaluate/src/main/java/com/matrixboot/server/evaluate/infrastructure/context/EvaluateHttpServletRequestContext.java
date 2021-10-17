@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @Slf4j
 @Component
-public class EvaluateHttpServletRequestContext implements IEvaluateContext {
+public class EvaluateHttpServletRequestContext extends AbstractEvaluateContext {
 
     /**
      * 存放最终的结果的 key
