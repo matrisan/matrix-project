@@ -79,8 +79,7 @@ public class MatrixStrategyMetaEntity extends ScenarioMetaEntity implements Orde
         if (!enable) {
             return false;
         }
-
-
+        return true;
     }
 
     @Override
