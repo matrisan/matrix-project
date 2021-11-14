@@ -6,7 +6,7 @@ import com.matrixboot.strategy.ScenarioMetaEntity;
 import java.util.List;
 
 /**
- * TODO
+ * 计算策略
  * <p>
  * create in 2021/11/9 11:07 下午
  *
@@ -16,8 +16,10 @@ import java.util.List;
 public interface IScenarioComputeRepository {
 
     /**
-     * @param scenarioMetaEntity
-     * @return
+     * 查找所有的计算方法
+     *
+     * @param scenarioMetaEntity 计算实体
+     * @return List
      */
     List<ScenarioComputeEntity> findAll(ScenarioMetaEntity scenarioMetaEntity);
 
