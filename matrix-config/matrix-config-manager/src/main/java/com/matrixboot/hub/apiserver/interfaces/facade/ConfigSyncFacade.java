@@ -6,6 +6,7 @@ import com.matrixboot.hub.common.ReturnVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,10 +34,10 @@ public class ConfigSyncFacade {
         return ReturnVO.success();
     }
 
+    @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void syncConfig(@NotNull ConfigSyncCommand command) {
         service.syncConfig(command);
     }
-
 
 }

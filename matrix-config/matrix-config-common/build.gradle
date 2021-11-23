@@ -10,6 +10,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework:spring-context'
     implementation 'org.jetbrains:annotations:22.0.0'
     compileOnly 'org.projectlombok:lombok'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'

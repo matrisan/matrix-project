@@ -63,18 +63,6 @@ public class ConfigSchedulerService implements InitializingBean {
         );
     }
 
-    /**
-     * 删除配置
-     * 遍历 configPostProcessor 处理器进行其他处理,如 DNS 解绑, 本地配置删除, 远程配置删除
-     *
-     * @param command 删除命令
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void deleteConfig(@NotNull ConfigDeleteCommand command) {
-        Optional<ConfigEntity> optional = configRepository.findById(command.getId());
-        optional.ifPresent(config -> processors.forEach(processor -> processor.configPostProcessor(config.getNode(), config)));
-    }
-
     private final Map<String, IPredicateStrategy> strategyMap;
 
     /**
@@ -101,8 +89,8 @@ public class ConfigSchedulerService implements InitializingBean {
      * @return Pair
      */
     @Contract("null, _ -> fail")
-    private @NotNull
-    Pair<Integer, NodeEntity> calculateEachNodeScore(NodeEntity node, ConfigEntity config) {
+    @NotNull
+    private Pair<Integer, NodeEntity> calculateEachNodeScore(NodeEntity node, ConfigEntity config) {
         return Pair.of(calculate(node, config), node);
     }
 
