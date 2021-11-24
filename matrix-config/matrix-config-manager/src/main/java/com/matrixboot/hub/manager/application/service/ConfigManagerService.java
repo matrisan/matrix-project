@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.application.service;
 
 import com.matrixboot.hub.manager.application.ConfigCreateCommand;
-import com.matrixboot.hub.manager.application.ConfigFactory;
+import com.matrixboot.hub.manager.infrastructure.transverter.ConfigFactory;
 import com.matrixboot.hub.manager.domain.repository.IConfigEntityRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +22,11 @@ public class ConfigManagerService {
 
     private final IConfigEntityRepository repository;
 
+    /**
+     * 创建新的配置
+     *
+     * @param command ConfigCreateCommand
+     */
     public void create(ConfigCreateCommand command) {
         repository.save(ConfigFactory.create(command));
     }

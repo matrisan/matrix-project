@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
  */
 
 @Slf4j
-@Component("RemoteVersionV1")
-public class RemoteVersionV1 implements IRemoteVersion<VersionV1> {
+@Component("RemoteVersionV2")
+public class RemoteVersionV2 implements IRemoteVersion<VersionV2> {
 
     @Override
-    public VersionV1 convertor(ConfigEntity entity) {
+    public VersionV2 convertor(ConfigEntity entity) {
         return null;
     }
 }

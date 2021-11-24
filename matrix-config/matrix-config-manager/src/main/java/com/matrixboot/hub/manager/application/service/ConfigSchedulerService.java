@@ -77,7 +77,9 @@ public class ConfigSchedulerService implements InitializingBean {
      * @return boolean
      */
     private boolean predicateNode(@NotNull NodeEntity node, ConfigEntity config) {
-        return node.match(config, strategyMap);
+        boolean match = node.match(config, strategyMap);
+        log.info("预选节点:{} - {} - {}", match, node, config);
+        return match;
     }
 
     /**
@@ -90,7 +92,9 @@ public class ConfigSchedulerService implements InitializingBean {
     @Contract("null, _ -> fail")
     @NotNull
     private Pair<Integer, NodeEntity> calculateEachNodeScore(NodeEntity node, ConfigEntity config) {
-        return Pair.of(calculate(node, config), node);
+        Pair<Integer, NodeEntity> pair = Pair.of(calculate(node, config), node);
+        log.info("计算节点评分 - {}", pair);
+        return pair;
     }
 
     private final INodeCalculate defaultNodeCalculate;
@@ -105,7 +109,9 @@ public class ConfigSchedulerService implements InitializingBean {
      * @return int
      */
     private int calculate(NodeEntity node, @NotNull ConfigEntity config) {
-        return calculateMap.getOrDefault(config.getSelector(), defaultNodeCalculate).calculate(node, config);
+        int calculate = calculateMap.getOrDefault(config.getSelector(), defaultNodeCalculate).calculate(node, config);
+        log.info("计算节点评分 - {} - {} - {}", calculate, node, config);
+        return calculate;
     }
 
     private final List<IConfigNodeProcessor> processors;

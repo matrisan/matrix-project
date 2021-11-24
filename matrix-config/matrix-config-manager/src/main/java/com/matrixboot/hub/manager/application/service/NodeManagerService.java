@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.application.service;
 
 import com.matrixboot.hub.manager.application.NodeCreateCommand;
-import com.matrixboot.hub.manager.application.NodeFactory;
+import com.matrixboot.hub.manager.infrastructure.transverter.NodeFactory;
 import com.matrixboot.hub.manager.application.NodeUpdateCommand;
 import com.matrixboot.hub.manager.domain.entity.NodeEntity;
 import com.matrixboot.hub.manager.domain.repository.INodeEntityRepository;
@@ -28,7 +28,6 @@ import java.util.Optional;
 public class NodeManagerService {
 
     private final INodeEntityRepository repository;
-
 
     public void createNode(NodeCreateCommand command) {
         repository.save(NodeFactory.from(command));

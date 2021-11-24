@@ -12,6 +12,12 @@ import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
  */
 public interface IRemoteVersion<T> {
 
+    /**
+     * 配置转换器
+     *
+     * @param entity 配置实体类
+     * @return T
+     */
     T convertor(ConfigEntity entity);
 
 }

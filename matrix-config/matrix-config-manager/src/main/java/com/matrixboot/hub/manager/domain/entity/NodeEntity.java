@@ -81,6 +81,9 @@ public class NodeEntity extends BaseEntity {
     @Convert(converter = UsageConverter.class)
     UsageValue usage;
 
+    String nodeVersion;
+
+
     /**
      * 配置列表
      */
@@ -92,8 +95,8 @@ public class NodeEntity extends BaseEntity {
     public boolean match(@NotNull ConfigEntity config, @NotNull Map<String, IPredicateStrategy> strategyMap) {
         NodeEntity node = this;
         return strategyMap.values().stream()
-                .map(iPredicateStrategy -> iPredicateStrategy.match(node, config))
-                .anyMatch(aBoolean -> aBoolean = Boolean.TRUE);
+                .map(strategy -> strategy.match(node, config))
+                .anyMatch(flag -> flag = Boolean.TRUE);
     }
 
     /**

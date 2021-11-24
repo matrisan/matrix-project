@@ -1,5 +1,6 @@
-package com.matrixboot.hub.manager.application;
+package com.matrixboot.hub.manager.infrastructure.transverter;
 
+import com.matrixboot.hub.manager.application.ConfigCreateCommand;
 import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

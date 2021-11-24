@@ -3,6 +3,8 @@ package com.matrixboot.hub.manager.infrastructure.extension;
 import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
 import com.matrixboot.hub.manager.domain.entity.NodeEntity;
 import com.matrixboot.hub.manager.infrastructure.exception.ConfigSyncException;
+import com.matrixboot.hub.manager.infrastructure.version.BaseVersion;
+import com.matrixboot.hub.manager.infrastructure.version.IRemoteVersion;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.annotation.Order;
@@ -10,6 +12,9 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * 发布数据
@@ -25,10 +30,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConfigNodePublishProcessor implements IConfigNodeProcessor {
 
+    @Resource
+    private Map<String, IRemoteVersion<BaseVersion>> versionMap;
+
     @Override
     @Retryable(recover = "configPreProcessorRecover", value = Exception.class, maxAttempts = 5, backoff = @Backoff(delay = 1, multiplier = 1.5))
     public void configPreProcessor(NodeEntity nodeEntity, ConfigEntity configEntity) {
         log.info("下发配置");
+        IRemoteVersion<BaseVersion> version = versionMap.get(nodeEntity.getNodeVersion());
+        BaseVersion convertor = version.convertor(configEntity);
+        // TODO
     }
 
     @Override
