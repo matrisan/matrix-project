@@ -31,13 +31,13 @@ import java.util.Map;
 public class ConfigNodePublishProcessor implements IConfigNodeProcessor {
 
     @Resource
-    private Map<String, IRemoteVersion<BaseVersion>> versionMap;
+    private Map<String, IRemoteVersion<? extends BaseVersion>> versionMap;
 
     @Override
     @Retryable(recover = "configPreProcessorRecover", value = Exception.class, maxAttempts = 5, backoff = @Backoff(delay = 1, multiplier = 1.5))
     public void configPreProcessor(NodeEntity nodeEntity, ConfigEntity configEntity) {
         log.info("下发配置");
-        IRemoteVersion<BaseVersion> version = versionMap.get(nodeEntity.getNodeVersion());
+        IRemoteVersion<? extends BaseVersion> version = versionMap.get(nodeEntity.getNodeVersion());
         BaseVersion convertor = version.convertor(configEntity);
         // TODO
     }

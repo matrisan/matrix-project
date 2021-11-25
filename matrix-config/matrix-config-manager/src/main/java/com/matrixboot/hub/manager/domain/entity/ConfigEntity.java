@@ -95,7 +95,8 @@ public class ConfigEntity extends BaseEntity {
      * 消耗资源信息
      */
     @Convert(converter = ResourceConverter.class)
-    ResourceValue resource;
+    @Column(nullable = false, columnDefinition = "VARCHAR(128) COMMENT '消耗资源信息'")
+    ResourceValue systemResource;
 
     /**
      * 节点的 ID
@@ -107,9 +108,9 @@ public class ConfigEntity extends BaseEntity {
      * 节点详情
      */
     @ToString.Exclude
+    @JsonBackReference
     @ManyToOne(targetEntity = NodeEntity.class, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "node_id", referencedColumnName = "id")
-    @JsonBackReference
     private NodeEntity node;
 
     /**

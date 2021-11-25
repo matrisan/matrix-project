@@ -3,7 +3,6 @@ package com.matrixboot.hub.manager.infrastructure.calculation;
 import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
 import com.matrixboot.hub.manager.domain.entity.NodeEntity;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Component;
  */
 
 @Slf4j
-@Primary
 @Component("DefaultNodeCalculate")
 public class DefaultNodeCalculate implements INodeCalculate {
 

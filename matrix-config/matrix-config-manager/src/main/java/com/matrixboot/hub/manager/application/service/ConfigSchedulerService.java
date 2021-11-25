@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * <p>
@@ -38,6 +39,14 @@ public class ConfigSchedulerService implements InitializingBean {
 
     private final IConfigEntityRepository configRepository;
 
+    private final INodeCalculate defaultNodeCalculate;
+
+    private final List<IConfigNodeProcessor> processors;
+
+    private final Map<String, IPredicateStrategy> strategyMap;
+
+    private final Map<String, INodeCalculate> calculateMap;
+
     /**
      * 1.获取所有的节点;
      * 2.查找能找到使用的节点;(预选节点)
@@ -51,18 +60,41 @@ public class ConfigSchedulerService implements InitializingBean {
     @Transactional(rollbackFor = Exception.class)
     public void syncConfig(@NotNull ConfigSyncCommand command) {
         Optional<ConfigEntity> optional = configRepository.findById(command.getId());
-        optional.ifPresent(config ->
-                nodeRepository.findAll().stream()
-                        .filter(node -> predicateNode(node, config))
-                        .map(node -> calculateEachNodeScore(node, config))
-                        .sorted((o1, o2) -> o2.getFirst().compareTo(o1.getFirst()))
-                        .limit(2)
-                        .map(Pair::getSecond)
-                        .forEach(node -> executeProcessors(node, config))
+        optional.ifPresent(config -> {
+                    Stream<NodeEntity> stream = nodeRepository.findAll().stream();
+                    Stream<NodeEntity> primaryStrategy = primaryStrategy(stream, config);
+                    Stream<NodeEntity> optimizationStrategy = optimizationStrategy(primaryStrategy, config);
+                    optimizationStrategy.forEach(node -> executeProcessors(node, config));
+                }
         );
+
     }
 
-    private final Map<String, IPredicateStrategy> strategyMap;
+    /**
+     * 预选策略
+     *
+     * @param stream 数据配置
+     * @param config 配置
+     * @return Stream
+     */
+    private Stream<NodeEntity> primaryStrategy(@NotNull Stream<NodeEntity> stream, ConfigEntity config) {
+        return stream.filter(node -> predicateNode(node, config));
+    }
+
+    /**
+     * 优选策略
+     *
+     * @param stream 数据配置
+     * @param config 配置
+     * @return Stream
+     */
+    private Stream<NodeEntity> optimizationStrategy(@NotNull Stream<NodeEntity> stream, ConfigEntity config) {
+        return stream.map(node -> calculateEachNodeScore(node, config))
+                .sorted((o1, o2) -> o2.getFirst().compareTo(o1.getFirst()))
+                .limit(2)
+                .map(Pair::getSecond);
+    }
+
 
     /**
      * 预选策略.
@@ -97,10 +129,6 @@ public class ConfigSchedulerService implements InitializingBean {
         return pair;
     }
 
-    private final INodeCalculate defaultNodeCalculate;
-
-    private final Map<String, INodeCalculate> calculateMap;
-
     /**
      * 计算每个节点对应配置的分值
      *
@@ -113,8 +141,6 @@ public class ConfigSchedulerService implements InitializingBean {
         log.info("计算节点评分 - {} - {} - {}", calculate, node, config);
         return calculate;
     }
-
-    private final List<IConfigNodeProcessor> processors;
 
     /**
      * 扩展点执行

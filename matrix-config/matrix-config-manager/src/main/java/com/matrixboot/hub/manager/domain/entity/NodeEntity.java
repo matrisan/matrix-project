@@ -89,7 +89,7 @@ public class NodeEntity extends BaseEntity {
      */
     @Column(nullable = false, columnDefinition = "VARCHAR(128) COMMENT '使用情况'")
     @Convert(converter = UsageConverter.class)
-    private UsageValue usage;
+    private UsageValue resourceUsage;
 
     /**
      * 节点的版本
@@ -119,7 +119,7 @@ public class NodeEntity extends BaseEntity {
      */
     public void addNewConfig(ConfigEntity config) {
         configList.add(config);
-        this.usage.increase(config.getResource());
+        this.resourceUsage.increase(config.getSystemResource());
     }
 
     /**
@@ -129,7 +129,7 @@ public class NodeEntity extends BaseEntity {
      */
     public void deleteConfig(ConfigEntity config) {
         configList.remove(config);
-        this.usage.reduce(config.getResource());
+        this.resourceUsage.reduce(config.getSystemResource());
     }
 
     /**
@@ -138,7 +138,7 @@ public class NodeEntity extends BaseEntity {
      * @return boolean
      */
     public boolean hasCapacity() {
-        return usage.getUsage() >= capacity.getCapacity();
+        return resourceUsage.getUsage() >= capacity.getCapacity();
     }
 
 }
