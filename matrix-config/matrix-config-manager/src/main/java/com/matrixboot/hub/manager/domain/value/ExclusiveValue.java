@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * create in 2021/9/16 7:51 下午
@@ -17,7 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExclusiveValue {
+public class ExclusiveValue implements Serializable {
+
+    private static final long serialVersionUID = -7136206573369430387L;
 
     @Getter
     private Boolean exclusive;

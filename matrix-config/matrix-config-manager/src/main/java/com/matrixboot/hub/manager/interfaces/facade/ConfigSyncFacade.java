@@ -2,7 +2,7 @@ package com.matrixboot.hub.manager.interfaces.facade;
 
 import com.matrixboot.hub.manager.application.ConfigSyncCommand;
 import com.matrixboot.hub.manager.application.service.ConfigSchedulerService;
-import com.matrixboot.hub.common.ReturnVO;
+import com.matrixboot.hub.manager.interfaces.vo.ReturnVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;

@@ -1,10 +1,10 @@
 package com.matrixboot.hub.manager.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.matrixboot.hub.common.entity.BaseEntity;
 import com.matrixboot.hub.manager.application.ConfigSyncCommand;
 import com.matrixboot.hub.manager.domain.value.ResourceValue;
 import com.matrixboot.hub.manager.infrastructure.converter.ResourceConverter;
-import com.matrixboot.hub.common.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +29,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * <p>
@@ -49,8 +50,14 @@ import javax.persistence.ManyToOne;
 @DynamicInsert
 @DynamicUpdate
 @Entity
+@Table(name = "ConfigEntity")
 public class ConfigEntity extends BaseEntity {
 
+    private static final long serialVersionUID = -5523364931796440110L;
+
+    /**
+     * ID
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;

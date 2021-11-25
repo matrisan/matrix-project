@@ -3,8 +3,11 @@ package com.matrixboot.hub.manager.domain.value;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -16,11 +19,13 @@ import org.jetbrains.annotations.NotNull;
 
 @Slf4j
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsageValue {
+public class UsageValue implements Serializable {
 
-    @Getter
+    private static final long serialVersionUID = -1612988031094806630L;
+
     private Integer usage;
 
     public void increase(@NotNull ResourceValue resource) {

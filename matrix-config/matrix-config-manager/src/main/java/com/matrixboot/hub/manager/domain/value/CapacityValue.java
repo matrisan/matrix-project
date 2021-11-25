@@ -3,7 +3,10 @@ package com.matrixboot.hub.manager.domain.value;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -15,9 +18,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CapacityValue {
+public class CapacityValue implements Serializable {
+
+    private static final long serialVersionUID = 1314478756710027410L;
 
     private Integer capacity;
 

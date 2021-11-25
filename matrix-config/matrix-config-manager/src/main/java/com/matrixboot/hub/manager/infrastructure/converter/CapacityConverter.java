@@ -19,7 +19,7 @@ import javax.persistence.Converter;
  */
 
 @Slf4j
-@Converter(autoApply = true)
+@Converter
 public class CapacityConverter implements AttributeConverter<CapacityValue, String> {
 
     @Resource

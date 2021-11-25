@@ -2,8 +2,10 @@ package com.matrixboot.hub.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -21,6 +23,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @MappedSuperclass
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 2564431570747861624L;
@@ -29,20 +32,20 @@ public abstract class BaseEntity implements Serializable {
      * 备注信息
      */
     @Column(nullable = false, columnDefinition = "CHAR(100) COMMENT 'note'")
-    private String note;
+    String note;
 
     /**
      * 是否为预置
      */
     @JsonIgnore
     @Column(columnDefinition = "INT(1) DEFAULT 0 COMMENT '是否为预置'")
-    private Boolean preset;
+    Boolean preset;
 
     /**
      * 是都逻辑删除
      */
     @Column(columnDefinition = "INT(1) DEFAULT 0 COMMENT '改记录是否删除'")
-    private Boolean deleted;
+    Boolean deleted;
 
     /**
      * 创建日期
@@ -50,7 +53,7 @@ public abstract class BaseEntity implements Serializable {
     @CreatedDate
     @Column(name = "create_date", columnDefinition = "DATETIME COMMENT '创建时间'")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDateTime createDate;
+    LocalDateTime createDate;
 
     /**
      * 最后更新日期
@@ -58,23 +61,25 @@ public abstract class BaseEntity implements Serializable {
     @LastModifiedDate
     @Column(name = "last_modified_date", columnDefinition = "DATETIME COMMENT '最后更新时间'")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private LocalDateTime lastModifiedDate;
+    LocalDateTime lastModifiedDate;
 
     /**
      * 创建人
      */
     @CreatedBy
     @Column(name = "create_by", columnDefinition = "VARCHAR(100) COMMENT '创建人'")
-    private String createBy;
+    String createBy;
 
     /**
      * 最后更新人
      */
     @LastModifiedBy
     @Column(name = "last_modified_by", columnDefinition = "VARCHAR(100) COMMENT '最后更新人'")
-    private String lastModifiedBy;
+    String lastModifiedBy;
 
-
+    /**
+     * 版本号
+     */
     @Version
     Long version;
 

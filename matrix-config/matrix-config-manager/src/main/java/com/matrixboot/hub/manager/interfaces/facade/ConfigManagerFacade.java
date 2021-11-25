@@ -2,7 +2,7 @@ package com.matrixboot.hub.manager.interfaces.facade;
 
 import com.matrixboot.hub.manager.application.ConfigCreateCommand;
 import com.matrixboot.hub.manager.application.service.ConfigManagerService;
-import com.matrixboot.hub.common.ReturnVO;
+import com.matrixboot.hub.manager.interfaces.vo.ReturnVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;

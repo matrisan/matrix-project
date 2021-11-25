@@ -19,7 +19,7 @@ import javax.persistence.Converter;
  */
 
 @Slf4j
-@Converter(autoApply = true)
+@Converter
 public class ExclusiveConverter implements AttributeConverter<ExclusiveValue, String> {
 
     @Resource
