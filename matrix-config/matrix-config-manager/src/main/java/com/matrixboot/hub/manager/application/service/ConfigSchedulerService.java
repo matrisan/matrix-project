@@ -15,13 +15,13 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.OrderComparator;
 import org.springframework.data.util.Pair;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * <p>
@@ -57,44 +57,21 @@ public class ConfigSchedulerService implements InitializingBean {
      *
      * @param command 同步命令
      */
+    @Async
     @Transactional(rollbackFor = Exception.class)
     public void syncConfig(@NotNull ConfigSyncCommand command) {
         Optional<ConfigEntity> optional = configRepository.findById(command.getId());
         optional.ifPresent(config -> {
-                    Stream<NodeEntity> stream = nodeRepository.findAll().stream();
-                    Stream<NodeEntity> primaryStrategy = primaryStrategy(stream, config);
-                    Stream<NodeEntity> optimizationStrategy = optimizationStrategy(primaryStrategy, config);
-                    optimizationStrategy.forEach(node -> executeProcessors(node, config));
-                }
-        );
-
+            log.info("需要同步的配置 - {}", config);
+            nodeRepository.findAll().stream()
+                    .filter(node -> predicateNode(node, config))
+                    .map(node -> calculateEachNodeScore(node, config))
+                    .sorted((o1, o2) -> o2.getFirst().compareTo(o1.getFirst()))
+                    .limit(2)
+                    .map(Pair::getSecond)
+                    .forEach(node -> executeProcessors(node, config));
+        });
     }
-
-    /**
-     * 预选策略
-     *
-     * @param stream 数据配置
-     * @param config 配置
-     * @return Stream
-     */
-    private Stream<NodeEntity> primaryStrategy(@NotNull Stream<NodeEntity> stream, ConfigEntity config) {
-        return stream.filter(node -> predicateNode(node, config));
-    }
-
-    /**
-     * 优选策略
-     *
-     * @param stream 数据配置
-     * @param config 配置
-     * @return Stream
-     */
-    private Stream<NodeEntity> optimizationStrategy(@NotNull Stream<NodeEntity> stream, ConfigEntity config) {
-        return stream.map(node -> calculateEachNodeScore(node, config))
-                .sorted((o1, o2) -> o2.getFirst().compareTo(o1.getFirst()))
-                .limit(2)
-                .map(Pair::getSecond);
-    }
-
 
     /**
      * 预选策略.

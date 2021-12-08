@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.matrixboot.hub.manager.domain.value.ResourceValue;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.persistence.AttributeConverter;
@@ -34,6 +35,10 @@ public class ResourceConverter implements AttributeConverter<ResourceValue, Stri
     @Override
     @SneakyThrows(JsonProcessingException.class)
     public ResourceValue convertToEntityAttribute(String dbData) {
+        if (!StringUtils.hasLength(dbData)) {
+            return new ResourceValue();
+        }
+
         return objectMapper.readValue(dbData, ResourceValue.class);
     }
 }

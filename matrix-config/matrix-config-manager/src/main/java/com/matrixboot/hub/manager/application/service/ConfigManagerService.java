@@ -1,11 +1,14 @@
 package com.matrixboot.hub.manager.application.service;
 
 import com.matrixboot.hub.manager.application.ConfigCreateCommand;
-import com.matrixboot.hub.manager.infrastructure.transverter.ConfigFactory;
 import com.matrixboot.hub.manager.domain.repository.IConfigEntityRepository;
+import com.matrixboot.hub.manager.infrastructure.transverter.ConfigFactory;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
 
 /**
  * <p>
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@Validated
 @AllArgsConstructor
 public class ConfigManagerService {
 
@@ -27,7 +31,7 @@ public class ConfigManagerService {
      *
      * @param command ConfigCreateCommand
      */
-    public void create(ConfigCreateCommand command) {
+    public void create(@Valid ConfigCreateCommand command) {
         repository.save(ConfigFactory.create(command));
     }
 

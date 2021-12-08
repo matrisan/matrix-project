@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.Serializable;
+
 /**
  * 资源值对象
  * <p>
@@ -20,7 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResourceValue {
+public class ResourceValue implements Serializable {
+
+    private static final long serialVersionUID = 7450480632603691196L;
 
     private Integer resource;
 

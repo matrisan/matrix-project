@@ -31,7 +31,7 @@ public abstract class BaseEntity implements Serializable {
     /**
      * 备注信息
      */
-    @Column(nullable = false, columnDefinition = "CHAR(100) COMMENT 'note'")
+    @Column(columnDefinition = "CHAR(100) DEFAULT '' COMMENT 'note'")
     String note;
 
     /**

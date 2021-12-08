@@ -3,6 +3,7 @@ package com.matrixboot.hub.manager.domain.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.matrixboot.hub.common.entity.BaseEntity;
 import com.matrixboot.hub.manager.application.ConfigSyncCommand;
+import com.matrixboot.hub.manager.application.ConfigSyncTypeEnum;
 import com.matrixboot.hub.manager.domain.value.ResourceValue;
 import com.matrixboot.hub.manager.infrastructure.converter.ResourceConverter;
 import lombok.AccessLevel;
@@ -88,14 +89,14 @@ public class ConfigEntity extends BaseEntity {
     /**
      * 节点选择器
      */
-    @Column(nullable = false, columnDefinition = "CHAR(20) COMMENT 'selector'")
+    @Column(nullable = false, columnDefinition = "CHAR(20) DEFAULT '' COMMENT 'selector'")
     String selector;
 
     /**
      * 消耗资源信息
      */
     @Convert(converter = ResourceConverter.class)
-    @Column(nullable = false, columnDefinition = "VARCHAR(128) COMMENT '消耗资源信息'")
+    @Column(name = "system_resource", nullable = false, columnDefinition = "VARCHAR(128) DEFAULT '' COMMENT '消耗资源信息'")
     ResourceValue systemResource;
 
     /**
@@ -121,7 +122,10 @@ public class ConfigEntity extends BaseEntity {
     @DomainEvents
     ConfigSyncCommand domainEvents() {
         log.info("domainEvents");
-        return new ConfigSyncCommand();
+        ConfigSyncCommand configSyncCommand = new ConfigSyncCommand();
+        configSyncCommand.setId(this.id);
+        configSyncCommand.setConfigSyncType(ConfigSyncTypeEnum.CREATE);
+        return configSyncCommand;
     }
 
     /**

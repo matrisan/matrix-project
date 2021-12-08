@@ -1,0 +1,10 @@
+POST http://localhost:8788/config
+Content-Type: application/json
+
+{
+  "namespace": "shi",
+  "domain": "matrixboot.com",
+  "source": "127.0.0.1"
+}
+
+###

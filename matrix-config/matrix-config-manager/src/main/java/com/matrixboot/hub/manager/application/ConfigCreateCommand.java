@@ -10,6 +10,8 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * 配置创建命令
  * create in 2021/9/15 10:58 下午
@@ -27,10 +29,13 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ConfigCreateCommand {
 
+    @NotBlank
     String namespace;
 
+    @NotBlank
     String domain;
 
+    @NotBlank
     String source;
 
 
