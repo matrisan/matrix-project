@@ -2,7 +2,7 @@ package com.matrixboot.hub.manager.infrastructure.converter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.matrixboot.hub.manager.domain.value.ResourceValue;
+import com.matrixboot.hub.manager.domain.value.Resources;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -21,24 +21,24 @@ import javax.persistence.Converter;
 
 @Slf4j
 @Converter
-public class ResourceConverter implements AttributeConverter<ResourceValue, String> {
+public class ResourceConverter implements AttributeConverter<Resources, String> {
 
     @Resource
     private ObjectMapper objectMapper;
 
     @Override
     @SneakyThrows(JsonProcessingException.class)
-    public String convertToDatabaseColumn(ResourceValue attribute) {
+    public String convertToDatabaseColumn(Resources attribute) {
         return objectMapper.writeValueAsString(attribute);
     }
 
     @Override
     @SneakyThrows(JsonProcessingException.class)
-    public ResourceValue convertToEntityAttribute(String dbData) {
+    public Resources convertToEntityAttribute(String dbData) {
         if (!StringUtils.hasLength(dbData)) {
-            return new ResourceValue();
+            return new Resources();
         }
 
-        return objectMapper.readValue(dbData, ResourceValue.class);
+        return objectMapper.readValue(dbData, Resources.class);
     }
 }

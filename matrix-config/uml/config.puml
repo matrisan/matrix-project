@@ -1,0 +1,18 @@
+@startuml
+
+autonumber
+
+前端 -> manager: 请求添加网站
+manager -> mysql: 网站已经添加
+return 数据保存成功
+manager --> 前端: 网站添加成功
+
+activate manager
+manager -> manager: 发布网站已保存事件
+manager -> manager: 预选节点
+manager -> manager: 优选节点
+manager -> 引擎: 引擎节点
+引擎 --> manager: 配置已同步
+deactivate manager
+
+@enduml

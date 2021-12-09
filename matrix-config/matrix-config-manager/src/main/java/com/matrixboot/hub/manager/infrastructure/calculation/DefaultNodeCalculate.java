@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component("DefaultNodeCalculate")
-public class DefaultNodeCalculate implements INodeCalculate {
+public class DefaultNodeCalculate implements IOptimizationPredicate {
 
     @Override
     public int calculate(NodeEntity nodeEntity, ConfigEntity entity) {

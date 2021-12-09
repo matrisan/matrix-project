@@ -1,6 +1,9 @@
 package com.matrixboot.hub.manager.domain.repository;
 
+import com.matrixboot.hub.manager.domain.IConfigView;
 import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -12,5 +15,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 
 public interface IConfigEntityRepository extends JpaRepository<ConfigEntity, Long> {
+
+    Page<IConfigView> findAllBy(Pageable pageable, Class<IConfigView> clz);
 
 }

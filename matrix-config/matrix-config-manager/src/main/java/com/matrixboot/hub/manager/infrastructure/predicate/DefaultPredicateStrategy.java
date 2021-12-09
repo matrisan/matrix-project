@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class DefaultPredicateStrategy implements IPredicateStrategy {
+public class DefaultPredicateStrategy implements IPrimaryPredicateStrategy {
 
     @Override
     public boolean match(NodeEntity nodeEntity, ConfigEntity configEntity) {

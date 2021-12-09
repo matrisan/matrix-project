@@ -2,7 +2,7 @@ package com.matrixboot.hub.manager.infrastructure.converter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.matrixboot.hub.manager.domain.value.CapacityValue;
+import com.matrixboot.hub.manager.domain.value.Capacity;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,20 +20,20 @@ import javax.persistence.Converter;
 
 @Slf4j
 @Converter
-public class CapacityConverter implements AttributeConverter<CapacityValue, String> {
+public class CapacityConverter implements AttributeConverter<Capacity, String> {
 
     @Resource
     private ObjectMapper objectMapper;
 
     @Override
     @SneakyThrows(JsonProcessingException.class)
-    public String convertToDatabaseColumn(CapacityValue attribute) {
+    public String convertToDatabaseColumn(Capacity attribute) {
         return objectMapper.writeValueAsString(attribute);
     }
 
     @Override
     @SneakyThrows(JsonProcessingException.class)
-    public CapacityValue convertToEntityAttribute(String dbData) {
-        return objectMapper.readValue(dbData, CapacityValue.class);
+    public Capacity convertToEntityAttribute(String dbData) {
+        return objectMapper.readValue(dbData, Capacity.class);
     }
 }

@@ -2,13 +2,12 @@ package com.matrixboot.hub.manager.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.matrixboot.hub.common.entity.BaseEntity;
-import com.matrixboot.hub.manager.domain.value.CapacityValue;
-import com.matrixboot.hub.manager.domain.value.ExclusiveValue;
-import com.matrixboot.hub.manager.domain.value.UsageValue;
+import com.matrixboot.hub.manager.domain.value.Capacity;
+import com.matrixboot.hub.manager.domain.value.Exclusive;
+import com.matrixboot.hub.manager.domain.value.Usage;
 import com.matrixboot.hub.manager.infrastructure.converter.CapacityConverter;
 import com.matrixboot.hub.manager.infrastructure.converter.ExclusiveConverter;
 import com.matrixboot.hub.manager.infrastructure.converter.UsageConverter;
-import com.matrixboot.hub.manager.infrastructure.predicate.IPredicateStrategy;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +19,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -32,7 +30,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
-import java.util.Map;
 
 /**
  * create in 2021/9/14 5:53 下午
@@ -62,40 +59,40 @@ public class NodeEntity extends BaseEntity {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
     /**
      * 节点名词
      */
     @Column(nullable = false, columnDefinition = "VARCHAR(20) COMMENT '节点名词'")
-    private String name;
+    String name;
 
     /**
      * 节点独享信息,一般时候用在某些
      */
     @Column(nullable = false, columnDefinition = "VARCHAR(128) COMMENT '节点独享信息'")
     @Convert(converter = ExclusiveConverter.class)
-    private ExclusiveValue exclusive;
+    Exclusive exclusive;
 
     /**
      * 容量
      */
     @Column(nullable = false, columnDefinition = "VARCHAR(128) COMMENT '容量'")
     @Convert(converter = CapacityConverter.class)
-    private CapacityValue capacity;
+    Capacity capacity;
 
     /**
      * 使用情况
      */
     @Column(nullable = false, columnDefinition = "VARCHAR(128) COMMENT '使用情况'")
     @Convert(converter = UsageConverter.class)
-    private UsageValue resourceUsage;
+    Usage resourceUsage;
 
     /**
      * 节点的版本
      */
     @Column(name = "node_version", nullable = false, columnDefinition = "VARCHAR(16) COMMENT 'domain'")
-    private String nodeVersion;
+    String nodeVersion;
 
     /**
      * 配置列表
@@ -104,13 +101,6 @@ public class NodeEntity extends BaseEntity {
     @JsonManagedReference
     @OneToMany(mappedBy = "node", fetch = FetchType.LAZY)
     private List<ConfigEntity> configList;
-
-    public boolean match(@NotNull ConfigEntity config, @NotNull Map<String, IPredicateStrategy> strategyMap) {
-        NodeEntity node = this;
-        return strategyMap.values().stream()
-                .map(strategy -> strategy.match(node, config))
-                .anyMatch(flag -> flag = Boolean.TRUE);
-    }
 
     /**
      * 新增配置

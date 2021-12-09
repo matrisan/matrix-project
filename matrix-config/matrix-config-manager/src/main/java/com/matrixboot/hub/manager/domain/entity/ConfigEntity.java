@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.matrixboot.hub.common.entity.BaseEntity;
 import com.matrixboot.hub.manager.application.ConfigSyncCommand;
 import com.matrixboot.hub.manager.application.ConfigSyncTypeEnum;
-import com.matrixboot.hub.manager.domain.value.ResourceValue;
+import com.matrixboot.hub.manager.domain.value.Resources;
 import com.matrixboot.hub.manager.infrastructure.converter.ResourceConverter;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -97,7 +97,7 @@ public class ConfigEntity extends BaseEntity {
      */
     @Convert(converter = ResourceConverter.class)
     @Column(name = "system_resource", nullable = false, columnDefinition = "VARCHAR(128) DEFAULT '' COMMENT '消耗资源信息'")
-    ResourceValue systemResource;
+    Resources systemResource;
 
     /**
      * 节点的 ID
@@ -120,7 +120,7 @@ public class ConfigEntity extends BaseEntity {
      * @return ConfigSyncCommand
      */
     @DomainEvents
-    ConfigSyncCommand domainEvents() {
+    public ConfigSyncCommand domainEvents() {
         log.info("domainEvents");
         ConfigSyncCommand configSyncCommand = new ConfigSyncCommand();
         configSyncCommand.setId(this.id);
@@ -132,7 +132,7 @@ public class ConfigEntity extends BaseEntity {
      * 事件回调
      */
     @AfterDomainEventPublication
-    void callbackMethod() {
+    public void callbackMethod() {
         log.info("AfterDomainEventPublication");
     }
 

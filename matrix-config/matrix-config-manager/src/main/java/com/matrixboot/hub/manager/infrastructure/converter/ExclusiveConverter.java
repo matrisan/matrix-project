@@ -2,7 +2,7 @@ package com.matrixboot.hub.manager.infrastructure.converter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.matrixboot.hub.manager.domain.value.ExclusiveValue;
+import com.matrixboot.hub.manager.domain.value.Exclusive;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,20 +20,20 @@ import javax.persistence.Converter;
 
 @Slf4j
 @Converter
-public class ExclusiveConverter implements AttributeConverter<ExclusiveValue, String> {
+public class ExclusiveConverter implements AttributeConverter<Exclusive, String> {
 
     @Resource
     private ObjectMapper objectMapper;
 
     @Override
     @SneakyThrows(JsonProcessingException.class)
-    public String convertToDatabaseColumn(ExclusiveValue attribute) {
+    public String convertToDatabaseColumn(Exclusive attribute) {
         return objectMapper.writeValueAsString(attribute);
     }
 
     @Override
     @SneakyThrows(JsonProcessingException.class)
-    public ExclusiveValue convertToEntityAttribute(String dbData) {
-        return objectMapper.readValue(dbData, ExclusiveValue.class);
+    public Exclusive convertToEntityAttribute(String dbData) {
+        return objectMapper.readValue(dbData, Exclusive.class);
     }
 }
