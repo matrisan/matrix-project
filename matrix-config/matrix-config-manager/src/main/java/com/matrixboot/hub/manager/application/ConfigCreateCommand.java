@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 /**
  * 配置创建命令
@@ -27,7 +28,9 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ConfigCreateCommand {
+public class ConfigCreateCommand implements Serializable {
+
+    private static final long serialVersionUID = -3758291503242328754L;
 
     @NotBlank
     String namespace;

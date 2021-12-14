@@ -30,7 +30,7 @@ public class OptimizationStrategyManagerService {
 
     private final Map<String, IOptimizationPredicate> calculateMap;
 
-    public List<Pair<NodeEntity, ConfigEntity>> optimizationPredicate(List<NodeEntity> nodes, ConfigEntity config) {
+    public List<Pair<NodeEntity, ConfigEntity>> optimizationPredicate(@NotNull List<NodeEntity> nodes, ConfigEntity config) {
         return nodes.stream().map(x -> optimizationPredicate(x, config))
                 .sorted((o1, o2) -> o2.getFirst().compareTo(o1.getFirst()))
                 .limit(2)

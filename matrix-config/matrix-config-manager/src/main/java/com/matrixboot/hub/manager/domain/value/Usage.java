@@ -26,14 +26,17 @@ public class Usage implements Serializable {
 
     private static final long serialVersionUID = -1612988031094806630L;
 
-    private Integer usage;
+    /**
+     * 使用量
+     */
+    private Integer amount;
 
     public void increase(@NotNull Resources resource) {
-        this.usage = this.usage + resource.getResource();
+        this.amount = this.amount + resource.getResource();
     }
 
     public void reduce(@NotNull Resources resource) {
-        this.usage = this.usage - resource.getResource();
+        this.amount = this.amount - resource.getResource();
     }
 
 }

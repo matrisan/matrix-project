@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.matrixboot.hub.common.entity.BaseEntity;
 import com.matrixboot.hub.manager.application.ConfigSyncCommand;
 import com.matrixboot.hub.manager.application.ConfigSyncTypeEnum;
+import com.matrixboot.hub.manager.application.ConfigUpdateCommand;
 import com.matrixboot.hub.manager.domain.value.Resources;
 import com.matrixboot.hub.manager.infrastructure.converter.ResourceConverter;
+import com.matrixboot.hub.manager.infrastructure.event.ConfigUpdateEvent;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +19,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.AfterDomainEventPublication;
 import org.springframework.data.domain.DomainEvents;
 
@@ -31,6 +35,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * <p>
@@ -51,7 +56,7 @@ import javax.persistence.Table;
 @DynamicInsert
 @DynamicUpdate
 @Entity
-@Table(name = "ConfigEntity")
+@Table(uniqueConstraints = {@UniqueConstraint(name = "uk_domain", columnNames = "domain")})
 public class ConfigEntity extends BaseEntity {
 
     private static final long serialVersionUID = -5523364931796440110L;
@@ -114,6 +119,19 @@ public class ConfigEntity extends BaseEntity {
     @JoinColumn(name = "node_id", referencedColumnName = "id")
     private NodeEntity node;
 
+
+    public boolean haveResource() {
+        return true;
+    }
+
+    public void updateConfig(@NotNull ConfigUpdateCommand command, @NotNull ApplicationContext applicationContext) {
+        this.namespace = (command.getNamespace());
+        this.domain = (command.getDomain());
+        this.source = (command.getSource());
+        applicationContext.publishEvent(new ConfigUpdateEvent(this));
+    }
+
+
     /**
      * 新建事件
      *
@@ -121,7 +139,7 @@ public class ConfigEntity extends BaseEntity {
      */
     @DomainEvents
     public ConfigSyncCommand domainEvents() {
-        log.info("domainEvents");
+        log.info("ConfigEntity - domainEvents - {}", this);
         ConfigSyncCommand configSyncCommand = new ConfigSyncCommand();
         configSyncCommand.setId(this.id);
         configSyncCommand.setConfigSyncType(ConfigSyncTypeEnum.CREATE);

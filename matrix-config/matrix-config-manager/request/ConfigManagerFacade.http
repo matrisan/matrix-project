@@ -1,3 +1,8 @@
+GET http://127.0.0.1:8788/configs
+
+
+
+###
 POST http://localhost:8788/config
 Content-Type: application/json
 
@@ -8,4 +13,16 @@ Content-Type: application/json
 }
 
 ###
-GET http://127.0.0.1:8788/configs
+PUT http://localhost:8788/config
+Content-Type: application/json
+
+{
+  "id": 1,
+  "namespace": "shishaodong2",
+  "domain": "matrixboot.com",
+  "source": "11.11.11.11"
+}
+
+
+
+

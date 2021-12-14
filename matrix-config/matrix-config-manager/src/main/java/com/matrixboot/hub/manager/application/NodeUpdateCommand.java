@@ -10,6 +10,8 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 节点更新命令
  * create in 2021/9/16 9:21 下午
@@ -28,6 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class NodeUpdateCommand extends NodeCreateCommand {
 
+    private static final long serialVersionUID = -6732527728412939294L;
+
+    @NotNull
     Long id;
 
 

@@ -23,7 +23,10 @@ public class Exclusive implements Serializable {
 
     private static final long serialVersionUID = -7136206573369430387L;
 
+    /**
+     * 排除
+     */
     @Getter
-    private Boolean exclusive;
+    private Boolean condition;
 
 }

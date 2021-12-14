@@ -25,6 +25,9 @@ public class Capacity implements Serializable {
 
     private static final long serialVersionUID = 1314478756710027410L;
 
-    private Integer capacity;
+    /**
+     * 容量
+     */
+    private Integer count;
 
 }

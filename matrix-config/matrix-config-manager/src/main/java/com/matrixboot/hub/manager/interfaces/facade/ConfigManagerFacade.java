@@ -1,6 +1,7 @@
 package com.matrixboot.hub.manager.interfaces.facade;
 
 import com.matrixboot.hub.manager.application.ConfigCreateCommand;
+import com.matrixboot.hub.manager.application.ConfigUpdateCommand;
 import com.matrixboot.hub.manager.application.service.ConfigManagerService;
 import com.matrixboot.hub.manager.domain.IConfigView;
 import com.matrixboot.hub.manager.interfaces.vo.ReturnVO;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,8 +35,14 @@ public class ConfigManagerFacade {
     }
 
     @PostMapping("config")
-    public ReturnVO<String> config(@RequestBody ConfigCreateCommand command) {
-        service.create(command);
+    public ReturnVO<String> configCreate(@RequestBody ConfigCreateCommand command) {
+        service.configCreate(command);
+        return ReturnVO.success();
+    }
+
+    @PutMapping("config")
+    public ReturnVO<String> configUpdate(@RequestBody ConfigUpdateCommand command) {
+        service.configUpdate(command);
         return ReturnVO.success();
     }
 

@@ -38,7 +38,6 @@ public class ResourceConverter implements AttributeConverter<Resources, String> 
         if (!StringUtils.hasLength(dbData)) {
             return new Resources();
         }
-
         return objectMapper.readValue(dbData, Resources.class);
     }
 }

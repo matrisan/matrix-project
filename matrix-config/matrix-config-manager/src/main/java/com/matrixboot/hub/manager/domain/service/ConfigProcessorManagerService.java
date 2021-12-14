@@ -27,7 +27,7 @@ public class ConfigProcessorManagerService implements InitializingBean {
 
     private final List<IConfigNodeProcessor> processors;
 
-    public void configPreProcessor(List<Pair<NodeEntity, ConfigEntity>> pairList) {
+    public void configPreProcessor(@NotNull List<Pair<NodeEntity, ConfigEntity>> pairList) {
         pairList.forEach(pair -> executeProcessors(pair.getFirst(), pair.getSecond()));
     }
 

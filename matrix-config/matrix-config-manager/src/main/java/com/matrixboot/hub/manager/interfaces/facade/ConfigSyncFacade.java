@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.interfaces.facade;
 
 import com.matrixboot.hub.manager.application.ConfigSyncCommand;
-import com.matrixboot.hub.manager.application.service.ConfigSchedulerService;
+import com.matrixboot.hub.manager.application.service.ConfigScheduleService;
 import com.matrixboot.hub.manager.interfaces.vo.ReturnVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class ConfigSyncFacade {
 
-    private final ConfigSchedulerService service;
+    private final ConfigScheduleService service;
 
     @PostMapping("sync")
     public ReturnVO<String> restSyncConfig(@RequestBody ConfigSyncCommand command) {

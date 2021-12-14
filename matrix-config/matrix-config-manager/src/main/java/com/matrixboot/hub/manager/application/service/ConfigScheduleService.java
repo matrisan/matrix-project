@@ -6,7 +6,6 @@ import com.matrixboot.hub.manager.domain.entity.NodeEntity;
 import com.matrixboot.hub.manager.domain.repository.IConfigEntityRepository;
 import com.matrixboot.hub.manager.domain.repository.INodeEntityRepository;
 import com.matrixboot.hub.manager.domain.service.ConfigProcessorManagerService;
-import com.matrixboot.hub.manager.domain.service.NodeMangerService;
 import com.matrixboot.hub.manager.domain.service.OptimizationStrategyManagerService;
 import com.matrixboot.hub.manager.domain.service.PrimaryStrategyManagerService;
 import lombok.AllArgsConstructor;
@@ -30,13 +29,11 @@ import java.util.Optional;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class ConfigSchedulerService {
+public class ConfigScheduleService {
 
     private final INodeEntityRepository nodeRepository;
 
     private final IConfigEntityRepository configRepository;
-
-    private final NodeMangerService nodeMangerService;
 
     private final ConfigProcessorManagerService configSyncService;
 
@@ -60,7 +57,7 @@ public class ConfigSchedulerService {
         Optional<ConfigEntity> optional = configRepository.findById(command.getId());
         optional.ifPresent(config -> {
             log.info("需要同步的配置 - {}", config);
-            List<NodeEntity> allNodes = nodeMangerService.filter(nodeRepository.findAll());
+            List<NodeEntity> allNodes = nodeRepository.findAll();
             List<NodeEntity> predicate = primaryStrategyService.primaryPredicate(allNodes, config);
             List<Pair<NodeEntity, ConfigEntity>> pairList = optimizationStrategyService.optimizationPredicate(predicate, config);
             configSyncService.configPreProcessor(pairList);

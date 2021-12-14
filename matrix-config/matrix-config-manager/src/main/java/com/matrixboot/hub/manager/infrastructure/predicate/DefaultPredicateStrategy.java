@@ -3,6 +3,7 @@ package com.matrixboot.hub.manager.infrastructure.predicate;
 import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
 import com.matrixboot.hub.manager.domain.entity.NodeEntity;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,7 +20,8 @@ import org.springframework.stereotype.Component;
 public class DefaultPredicateStrategy implements IPrimaryPredicateStrategy {
 
     @Override
-    public boolean match(NodeEntity nodeEntity, ConfigEntity configEntity) {
+    public boolean match(@NotNull NodeEntity nodeEntity, ConfigEntity configEntity) {
         return nodeEntity.hasCapacity();
     }
+
 }

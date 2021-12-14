@@ -5,6 +5,7 @@ import com.matrixboot.hub.manager.domain.entity.NodeEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <p>
@@ -18,8 +19,17 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class NodeFactory {
 
-    public static NodeEntity from(NodeCreateCommand command) {
-        return NodeEntity.builder().build();
+    /**
+     * 转换成节点信息
+     *
+     * @param command 创建命令
+     * @return NodeEntity
+     */
+    public static NodeEntity from(@NotNull NodeCreateCommand command) {
+        return NodeEntity.builder()
+                .name(command.getName())
+                .nodeVersion(command.getNodeVersion())
+                .build();
     }
 
 }

@@ -128,7 +128,7 @@ public class NodeEntity extends BaseEntity {
      * @return boolean
      */
     public boolean hasCapacity() {
-        return resourceUsage.getUsage() >= capacity.getCapacity();
+        return resourceUsage.getAmount() >= capacity.getCount();
     }
 
 }

@@ -1,10 +1,10 @@
 package com.matrixboot.hub.manager.application.service;
 
 import com.matrixboot.hub.manager.application.NodeCreateCommand;
-import com.matrixboot.hub.manager.infrastructure.transverter.NodeFactory;
 import com.matrixboot.hub.manager.application.NodeUpdateCommand;
 import com.matrixboot.hub.manager.domain.entity.NodeEntity;
 import com.matrixboot.hub.manager.domain.repository.INodeEntityRepository;
+import com.matrixboot.hub.manager.infrastructure.transverter.NodeFactory;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -29,10 +29,20 @@ public class NodeManagerService {
 
     private final INodeEntityRepository repository;
 
+    /**
+     * 创建节点
+     *
+     * @param command 创建命令
+     */
     public void createNode(NodeCreateCommand command) {
         repository.save(NodeFactory.from(command));
     }
 
+    /**
+     * 更新节点信息
+     *
+     * @param command 更新命令
+     */
     @Transactional(rollbackFor = Exception.class)
     public void update(@NotNull NodeUpdateCommand command) {
         Optional<NodeEntity> optional = repository.findById(command.getId());

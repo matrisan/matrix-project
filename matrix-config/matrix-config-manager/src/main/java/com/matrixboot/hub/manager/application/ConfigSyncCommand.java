@@ -27,6 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ConfigSyncCommand extends ConfigDeleteCommand {
 
+    private static final long serialVersionUID = 703132862903262977L;
+
     ConfigSyncTypeEnum configSyncType;
 
 }
