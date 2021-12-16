@@ -15,6 +15,12 @@ import java.util.Optional;
 
 public interface IConfigStatusRepository extends JpaRepository<ConfigStatusEntity, Long> {
 
+    /**
+     * 根据域名查找配置状态信息
+     *
+     * @param domain 域名
+     * @return ConfigStatusEntity
+     */
     Optional<ConfigStatusEntity> findByDomain(String domain);
 
 }

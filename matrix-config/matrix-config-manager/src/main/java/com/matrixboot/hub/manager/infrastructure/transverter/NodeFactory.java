@@ -2,6 +2,8 @@ package com.matrixboot.hub.manager.infrastructure.transverter;
 
 import com.matrixboot.hub.manager.application.NodeCreateCommand;
 import com.matrixboot.hub.manager.domain.entity.NodeEntity;
+import com.matrixboot.hub.manager.domain.value.Capacity;
+import com.matrixboot.hub.manager.domain.value.Usage;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,8 @@ public final class NodeFactory {
         return NodeEntity.builder()
                 .name(command.getName())
                 .nodeVersion(command.getNodeVersion())
+                .capacity(new Capacity(command.getCapacity()))
+                .resourceUsage(new Usage(0))
                 .build();
     }
 

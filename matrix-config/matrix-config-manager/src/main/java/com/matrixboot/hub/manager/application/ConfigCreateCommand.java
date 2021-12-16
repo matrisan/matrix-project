@@ -1,5 +1,6 @@
 package com.matrixboot.hub.manager.application;
 
+import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -33,13 +35,19 @@ public class ConfigCreateCommand implements Serializable {
     private static final long serialVersionUID = -3758291503242328754L;
 
     @NotBlank
+    @ExcelProperty("namespace")
     String namespace;
 
     @NotBlank
+    @ExcelProperty("domain")
     String domain;
 
     @NotBlank
+    @ExcelProperty("source")
     String source;
 
+    @NotNull
+    @ExcelProperty("resources")
+    Integer resources;
 
 }

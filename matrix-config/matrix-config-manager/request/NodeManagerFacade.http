@@ -1,0 +1,20 @@
+POST http://localhost:8788/node
+Content-Type: application/json
+
+{
+  "name": "节点-1",
+  "capacity": 100,
+  "nodeVersion": "RemoteVersionV1"
+}
+
+###
+POST http://localhost:8788/node
+Content-Type: application/json
+
+{
+  "name": "节点-2",
+  "capacity": 100,
+  "nodeVersion": "RemoteVersionV2"
+}
+
+###

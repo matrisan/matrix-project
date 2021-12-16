@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.matrixboot.hub.manager.domain.value.Capacity;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.persistence.AttributeConverter;
@@ -34,6 +35,9 @@ public class CapacityConverter implements AttributeConverter<Capacity, String> {
     @Override
     @SneakyThrows(JsonProcessingException.class)
     public Capacity convertToEntityAttribute(String dbData) {
-        return objectMapper.readValue(dbData, Capacity.class);
+        if (StringUtils.hasText(dbData)) {
+            return objectMapper.readValue(dbData, Capacity.class);
+        }
+        return null;
     }
 }

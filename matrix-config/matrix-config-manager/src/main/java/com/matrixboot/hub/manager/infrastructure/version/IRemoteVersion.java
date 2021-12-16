@@ -20,4 +20,11 @@ public interface IRemoteVersion<T> {
      */
     T convertor(ConfigEntity entity);
 
+    /**
+     * 具体执行传输数据
+     *
+     * @param data 不同版本的数据
+     */
+    void doTransfer(BaseVersion data);
+
 }

@@ -1,5 +1,6 @@
 package com.matrixboot.hub.manager.application;
 
+import com.matrixboot.hub.manager.infrastructure.validation.NodeVersion;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,9 +39,16 @@ public class NodeCreateCommand implements Serializable {
     String name;
 
     /**
+     * 容量
+     */
+    Integer capacity;
+
+    /**
      * 版本
      */
     @NotBlank
+    @NodeVersion
     String nodeVersion;
+
 
 }

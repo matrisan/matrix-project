@@ -4,13 +4,16 @@ import com.matrixboot.hub.manager.application.NodeCreateCommand;
 import com.matrixboot.hub.manager.application.NodeUpdateCommand;
 import com.matrixboot.hub.manager.domain.entity.NodeEntity;
 import com.matrixboot.hub.manager.domain.repository.INodeEntityRepository;
+import com.matrixboot.hub.manager.domain.value.Capacity;
 import com.matrixboot.hub.manager.infrastructure.transverter.NodeFactory;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 /**
@@ -24,6 +27,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@Validated
 @AllArgsConstructor
 public class NodeManagerService {
 
@@ -34,7 +38,7 @@ public class NodeManagerService {
      *
      * @param command 创建命令
      */
-    public void createNode(NodeCreateCommand command) {
+    public void createNode(@Valid NodeCreateCommand command) {
         repository.save(NodeFactory.from(command));
     }
 
@@ -47,9 +51,10 @@ public class NodeManagerService {
     public void update(@NotNull NodeUpdateCommand command) {
         Optional<NodeEntity> optional = repository.findById(command.getId());
         optional.ifPresent(node -> {
-            //TODO UPDATE
+            node.setName(command.getName());
+            node.setCapacity(new Capacity(command.getCapacity()));
+            node.setNodeVersion(command.getNodeVersion());
         });
-
     }
 
 }

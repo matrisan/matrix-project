@@ -30,21 +30,23 @@ import java.util.Map;
 @Component
 public class ConfigNodePublishProcessor implements IConfigNodeProcessor {
 
+    /**
+     * Map 的 key 为 {@link IRemoteVersion} 的子类的名称
+     */
     @Resource
     private Map<String, IRemoteVersion<? extends BaseVersion>> versionMap;
 
     @Override
-    @Retryable(recover = "configPreProcessorRecover", value = Exception.class, maxAttempts = 5, backoff = @Backoff(delay = 1, multiplier = 1.5))
-    public void configPreProcessor(NodeEntity nodeEntity, ConfigEntity configEntity) {
+    @Retryable(recover = "configProcessorRecover", value = Exception.class, maxAttempts = 5, backoff = @Backoff(delay = 1, multiplier = 1.5))
+    public void configPreProcessor(@NotNull NodeEntity nodeEntity, ConfigEntity configEntity) {
         log.info("下发配置");
         IRemoteVersion<? extends BaseVersion> version = versionMap.get(nodeEntity.getNodeVersion());
-        BaseVersion convertor = version.convertor(configEntity);
-
+        version.doTransfer(version.convertor(configEntity));
     }
 
     @Override
-    @Retryable(recover = "configPostProcessorRecover", value = Exception.class, maxAttempts = 5, backoff = @Backoff(delay = 1, multiplier = 1.5))
-    public void configPostProcessor(NodeEntity nodeEntity, ConfigEntity configEntity) {
+    @Retryable(recover = "configProcessorRecover", value = Exception.class, maxAttempts = 5, backoff = @Backoff(delay = 1, multiplier = 1.5))
+    public void configPostProcessor(@NotNull NodeEntity nodeEntity, ConfigEntity configEntity) {
         log.info("删除下发的配置");
     }
 
@@ -56,21 +58,9 @@ public class ConfigNodePublishProcessor implements IConfigNodeProcessor {
      * @param e            异常信息
      */
     @Recover
-    public void configPreProcessorRecover(NodeEntity nodeEntity, ConfigEntity configEntity, @NotNull Exception e) {
-        log.info("#health check# unhealthy: " + e.getMessage());
+    public void configProcessorRecover(NodeEntity nodeEntity, ConfigEntity configEntity, @NotNull Exception e) {
+        log.info("出现异常 {}", e.getMessage());
         throw new ConfigSyncException();
     }
 
-    /**
-     * 后置处理
-     *
-     * @param nodeEntity   节点信息
-     * @param configEntity 配置信息
-     * @param e            异常信息
-     */
-    @Recover
-    public void configPostProcessorRecover(NodeEntity nodeEntity, ConfigEntity configEntity, @NotNull Exception e) {
-        log.info("#health check# unhealthy: " + e.getMessage());
-        throw new ConfigSyncException();
-    }
 }

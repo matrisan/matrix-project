@@ -102,7 +102,7 @@ public class ConfigEntity extends BaseEntity {
      */
     @Convert(converter = ResourceConverter.class)
     @Column(name = "system_resource", nullable = false, columnDefinition = "VARCHAR(128) DEFAULT '' COMMENT '消耗资源信息'")
-    Resources systemResource;
+    Resources resources;
 
     /**
      * 节点的 ID
@@ -138,7 +138,7 @@ public class ConfigEntity extends BaseEntity {
      * @return ConfigSyncCommand
      */
     @DomainEvents
-    public ConfigSyncCommand domainEvents() {
+    ConfigSyncCommand domainEvents() {
         log.info("ConfigEntity - domainEvents - {}", this);
         ConfigSyncCommand configSyncCommand = new ConfigSyncCommand();
         configSyncCommand.setId(this.id);
@@ -150,7 +150,7 @@ public class ConfigEntity extends BaseEntity {
      * 事件回调
      */
     @AfterDomainEventPublication
-    public void callbackMethod() {
+    void callbackMethod() {
         log.info("AfterDomainEventPublication");
     }
 

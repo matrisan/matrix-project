@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -55,6 +56,18 @@ public class ConfigManagerService {
     }
 
     /**
+     * 创建新的配置
+     *
+     * @param command ConfigCreateCommand
+     */
+    public void configCreate(@Valid @NotNull List<ConfigCreateCommand> command) {
+        command.forEach(configCreateCommand -> {
+            ConfigEntity save = repository.save(ConfigFactory.create(configCreateCommand));
+            log.info("配置已经保存 - {}", save);
+        });
+    }
+
+    /**
      * 更新配置,全量更新那种
      *
      * @param command 更新命令
@@ -67,6 +80,11 @@ public class ConfigManagerService {
         optional.ifPresent(config -> config.updateConfig(command, context));
     }
 
+    /**
+     * 删除配置
+     *
+     * @param command 删除命令
+     */
     @Transactional(rollbackFor = Exception.class)
     public void deleteConfig(@Valid @NotNull ConfigDeleteCommand command) {
         Optional<ConfigEntity> optional = repository.findById(command.getId());

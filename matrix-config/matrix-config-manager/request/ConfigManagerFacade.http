@@ -9,8 +9,21 @@ Content-Type: application/json
 {
   "namespace": "shi",
   "domain": "matrixboot.com",
-  "source": "127.0.0.1"
+  "source": "127.0.0.1",
+  "resources": 1
 }
+
+###
+
+POST http://localhost:8788/config/excel
+Content-Type: multipart/form-data;boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="multipartFile"; filename="config.xlsx"
+Content-Type: multipart/form-data
+
+< ./config.xlsx
+--WebAppBoundary--
 
 ###
 PUT http://localhost:8788/config

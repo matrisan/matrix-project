@@ -4,7 +4,6 @@ import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
 import com.matrixboot.hub.manager.domain.entity.NodeEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.stereotype.Component;
 
 /**
  * 默认预选策略
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
  */
 
 @Slf4j
-@Component
 public class DefaultPredicateStrategy implements IPrimaryPredicateStrategy {
 
     @Override

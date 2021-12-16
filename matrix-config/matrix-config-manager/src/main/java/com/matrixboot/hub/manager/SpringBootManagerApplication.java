@@ -1,8 +1,11 @@
 package com.matrixboot.hub.manager;
 
+import com.matrixboot.redis.annotation.EnableRedisStreamClients;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
@@ -14,7 +17,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
  */
 
 @EnableAsync
+@EnableJpaAuditing
+@EnableFeignClients
 @EnableAspectJAutoProxy
+@EnableRedisStreamClients
 @SpringBootApplication
 public class SpringBootManagerApplication {
 

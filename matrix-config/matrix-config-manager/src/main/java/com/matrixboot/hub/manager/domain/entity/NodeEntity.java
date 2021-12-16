@@ -70,21 +70,21 @@ public class NodeEntity extends BaseEntity {
     /**
      * 节点独享信息,一般时候用在某些
      */
-    @Column(nullable = false, columnDefinition = "VARCHAR(128) COMMENT '节点独享信息'")
+    @Column(columnDefinition = "VARCHAR(128) COMMENT '节点独享信息'")
     @Convert(converter = ExclusiveConverter.class)
     Exclusive exclusive;
 
     /**
      * 容量
      */
-    @Column(nullable = false, columnDefinition = "VARCHAR(128) COMMENT '容量'")
+    @Column(columnDefinition = "VARCHAR(128) COMMENT '容量'")
     @Convert(converter = CapacityConverter.class)
     Capacity capacity;
 
     /**
      * 使用情况
      */
-    @Column(nullable = false, columnDefinition = "VARCHAR(128) COMMENT '使用情况'")
+    @Column(columnDefinition = "VARCHAR(128) COMMENT '使用情况'")
     @Convert(converter = UsageConverter.class)
     Usage resourceUsage;
 
@@ -99,7 +99,7 @@ public class NodeEntity extends BaseEntity {
      */
     @ToString.Exclude
     @JsonManagedReference
-    @OneToMany(mappedBy = "node", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "node", fetch = FetchType.EAGER)
     private List<ConfigEntity> configList;
 
     /**
@@ -109,7 +109,7 @@ public class NodeEntity extends BaseEntity {
      */
     public void addNewConfig(ConfigEntity config) {
         configList.add(config);
-        this.resourceUsage.increase(config.getSystemResource());
+        this.resourceUsage.increase(config.getResources());
     }
 
     /**
@@ -119,7 +119,7 @@ public class NodeEntity extends BaseEntity {
      */
     public void deleteConfig(ConfigEntity config) {
         configList.remove(config);
-        this.resourceUsage.reduce(config.getSystemResource());
+        this.resourceUsage.reduce(config.getResources());
     }
 
     /**

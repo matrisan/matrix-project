@@ -22,7 +22,7 @@ import java.io.Serializable;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReturnVO<T> implements Serializable {
+public class ReturnVO<T extends Serializable> implements Serializable {
 
     private static final long serialVersionUID = -1095916834410197538L;
 
@@ -32,35 +32,35 @@ public class ReturnVO<T> implements Serializable {
 
     private T data;
 
-    public static <T> ReturnVO<T> success() {
+    public static <T extends Serializable> ReturnVO<T> success() {
         return ReturnVO.<T>builder().code(200).message("执行成功").build();
     }
 
-    public static <T> ReturnVO<T> success(String message) {
+    public static <T extends Serializable> ReturnVO<T> success(String message) {
         return ReturnVO.<T>builder().code(200).message(message).build();
     }
 
-    public static <T> ReturnVO<T> success(String message, T data) {
+    public static <T extends Serializable> ReturnVO<T> success(String message, T data) {
         return ReturnVO.<T>builder().code(200).message(message).data(data).build();
     }
 
-    public static <T> ReturnVO<T> success(T data) {
+    public static <T extends Serializable> ReturnVO<T> success(T data) {
         return ReturnVO.<T>builder().code(200).message("执行成功").data(data).build();
     }
 
-    public static <T> ReturnVO<T> failure() {
+    public static <T extends Serializable> ReturnVO<T> failure() {
         return ReturnVO.<T>builder().code(500).message("执行失败").build();
     }
 
-    public static <T> ReturnVO<T> failure(String message) {
+    public static <T extends Serializable> ReturnVO<T> failure(String message) {
         return ReturnVO.<T>builder().code(500).message(message).build();
     }
 
-    public static <T> ReturnVO<T> failure(String message, T data) {
+    public static <T extends Serializable> ReturnVO<T> failure(String message, T data) {
         return ReturnVO.<T>builder().code(500).message(message).data(data).build();
     }
 
-    public static <T> ReturnVO<T> failure(T data) {
+    public static <T extends Serializable> ReturnVO<T> failure(T data) {
         return ReturnVO.<T>builder().code(500).message("执行失败").data(data).build();
     }
 

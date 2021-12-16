@@ -2,6 +2,7 @@ package com.matrixboot.hub.manager.infrastructure.transverter;
 
 import com.matrixboot.hub.manager.application.ConfigCreateCommand;
 import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
+import com.matrixboot.hub.manager.domain.value.Resources;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ public final class ConfigFactory {
                 .namespace(command.getNamespace())
                 .domain(command.getDomain())
                 .source(command.getSource())
+                .resources(new Resources(command.getResources()))
                 .build();
     }
 

@@ -1,5 +1,7 @@
 package com.matrixboot.hub.manager.interfaces.facade;
 
+import com.matrixboot.excel.ExcelRequestBody;
+import com.matrixboot.excel.ExcelResponseBody;
 import com.matrixboot.hub.manager.application.ConfigCreateCommand;
 import com.matrixboot.hub.manager.application.ConfigUpdateCommand;
 import com.matrixboot.hub.manager.application.service.ConfigManagerService;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>
@@ -46,4 +50,15 @@ public class ConfigManagerFacade {
         return ReturnVO.success();
     }
 
+    @PostMapping("config/excel")
+    public ReturnVO<String> configCreate(@ExcelRequestBody List<ConfigCreateCommand> command) {
+        service.configCreate(command);
+        return ReturnVO.success();
+    }
+
+    @ExcelResponseBody
+    @GetMapping("configs/excel")
+    public List<IConfigView> findAllExcel(Pageable pageable) {
+        return service.findAll(pageable).getContent();
+    }
 }
