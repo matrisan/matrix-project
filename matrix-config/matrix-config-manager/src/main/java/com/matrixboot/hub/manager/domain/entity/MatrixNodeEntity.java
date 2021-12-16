@@ -50,7 +50,7 @@ import java.util.List;
 @DynamicUpdate
 @Entity
 @Table(name = "NodeEntity")
-public class NodeEntity extends BaseEntity {
+public class MatrixNodeEntity extends BaseEntity {
 
     private static final long serialVersionUID = -8462673582623260919L;
 
@@ -100,14 +100,14 @@ public class NodeEntity extends BaseEntity {
     @ToString.Exclude
     @JsonManagedReference
     @OneToMany(mappedBy = "node", fetch = FetchType.EAGER)
-    private List<ConfigEntity> configList;
+    private List<MatrixConfigEntity> configList;
 
     /**
      * 新增配置
      *
      * @param config 配置信息
      */
-    public void addNewConfig(ConfigEntity config) {
+    public void addNewConfig(MatrixConfigEntity config) {
         configList.add(config);
         this.resourceUsage.increase(config.getResources());
     }
@@ -117,7 +117,7 @@ public class NodeEntity extends BaseEntity {
      *
      * @param config 配置信息
      */
-    public void deleteConfig(ConfigEntity config) {
+    public void deleteConfig(MatrixConfigEntity config) {
         configList.remove(config);
         this.resourceUsage.reduce(config.getResources());
     }

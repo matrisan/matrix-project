@@ -1,6 +1,6 @@
 package com.matrixboot.hub.manager.infrastructure.version;
 
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
 import com.matrixboot.redis.annotation.RedisStreamClient;
 import com.matrixboot.redis.annotation.RedisStreamEndpoint;
 import lombok.AccessLevel;
@@ -33,7 +33,7 @@ public class RemoteVersionV1 implements IRemoteVersion<VersionV1> {
     private IRedisStreamInput redisStreamInput;
 
     @Override
-    public VersionV1 convertor(@NotNull ConfigEntity entity) {
+    public VersionV1 convertor(@NotNull MatrixConfigEntity entity) {
         return VersionV1.builder()
                 .domain(entity.getDomain())
                 .source(entity.getSource())

@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.domain.service;
 
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
-import com.matrixboot.hub.manager.domain.entity.NodeEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixNodeEntity;
 import com.matrixboot.hub.manager.infrastructure.predicate.IPrimaryPredicateStrategy;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,14 @@ public class PrimaryStrategyManagerService {
 
     private final Map<String, IPrimaryPredicateStrategy> strategyMap;
 
-    public List<NodeEntity> primaryPredicate(@NotNull List<NodeEntity> list, ConfigEntity config) {
+    /**
+     * 预选节点
+     *
+     * @param list   节点信息
+     * @param config 配置信息
+     * @return list
+     */
+    public List<MatrixNodeEntity> primaryPredicate(@NotNull List<MatrixNodeEntity> list, MatrixConfigEntity config) {
         return list.stream().filter(nodeEntity -> predicateNode(nodeEntity, config))
                 .collect(Collectors.toList());
     }
@@ -44,7 +51,7 @@ public class PrimaryStrategyManagerService {
      * @param node   节点实体
      * @return boolean
      */
-    private boolean predicateNode(@NotNull NodeEntity node, ConfigEntity config) {
+    private boolean predicateNode(@NotNull MatrixNodeEntity node, MatrixConfigEntity config) {
         boolean match = strategyMap.values().stream()
                 .map(strategy -> strategy.match(node, config))
                 .anyMatch(flag -> flag = Boolean.TRUE);

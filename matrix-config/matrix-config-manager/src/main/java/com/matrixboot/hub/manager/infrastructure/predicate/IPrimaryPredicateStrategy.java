@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.infrastructure.predicate;
 
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
-import com.matrixboot.hub.manager.domain.entity.NodeEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixNodeEntity;
 
 /**
  * 预选策略
@@ -22,6 +22,6 @@ public interface IPrimaryPredicateStrategy {
      * @param configEntity 配置信息
      * @return boolean
      */
-    boolean match(NodeEntity nodeEntity, ConfigEntity configEntity);
+    boolean match(MatrixNodeEntity nodeEntity, MatrixConfigEntity configEntity);
 
 }

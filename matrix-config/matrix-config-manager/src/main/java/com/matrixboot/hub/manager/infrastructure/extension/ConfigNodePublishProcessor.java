@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.infrastructure.extension;
 
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
-import com.matrixboot.hub.manager.domain.entity.NodeEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixNodeEntity;
 import com.matrixboot.hub.manager.infrastructure.exception.ConfigSyncException;
 import com.matrixboot.hub.manager.infrastructure.version.BaseVersion;
 import com.matrixboot.hub.manager.infrastructure.version.IRemoteVersion;
@@ -38,7 +38,7 @@ public class ConfigNodePublishProcessor implements IConfigNodeProcessor {
 
     @Override
     @Retryable(recover = "configProcessorRecover", value = Exception.class, maxAttempts = 5, backoff = @Backoff(delay = 1, multiplier = 1.5))
-    public void configPreProcessor(@NotNull NodeEntity nodeEntity, ConfigEntity configEntity) {
+    public void configPreProcessor(@NotNull MatrixNodeEntity nodeEntity, MatrixConfigEntity configEntity) {
         log.info("下发配置");
         IRemoteVersion<? extends BaseVersion> version = versionMap.get(nodeEntity.getNodeVersion());
         version.doTransfer(version.convertor(configEntity));
@@ -46,7 +46,7 @@ public class ConfigNodePublishProcessor implements IConfigNodeProcessor {
 
     @Override
     @Retryable(recover = "configProcessorRecover", value = Exception.class, maxAttempts = 5, backoff = @Backoff(delay = 1, multiplier = 1.5))
-    public void configPostProcessor(@NotNull NodeEntity nodeEntity, ConfigEntity configEntity) {
+    public void configPostProcessor(@NotNull MatrixNodeEntity nodeEntity, MatrixConfigEntity configEntity) {
         log.info("删除下发的配置");
     }
 
@@ -58,7 +58,7 @@ public class ConfigNodePublishProcessor implements IConfigNodeProcessor {
      * @param e            异常信息
      */
     @Recover
-    public void configProcessorRecover(NodeEntity nodeEntity, ConfigEntity configEntity, @NotNull Exception e) {
+    public void configProcessorRecover(MatrixNodeEntity nodeEntity, MatrixConfigEntity configEntity, @NotNull Exception e) {
         log.info("出现异常 {}", e.getMessage());
         throw new ConfigSyncException();
     }

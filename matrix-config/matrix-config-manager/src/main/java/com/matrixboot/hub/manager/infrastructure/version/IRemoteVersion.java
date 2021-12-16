@@ -1,6 +1,6 @@
 package com.matrixboot.hub.manager.infrastructure.version;
 
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
 
 /**
  * 版本转换器
@@ -18,7 +18,7 @@ public interface IRemoteVersion<T> {
      * @param entity 配置实体类
      * @return T
      */
-    T convertor(ConfigEntity entity);
+    T convertor(MatrixConfigEntity entity);
 
     /**
      * 具体执行传输数据

@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.infrastructure.extension;
 
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
-import com.matrixboot.hub.manager.domain.entity.NodeEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixNodeEntity;
 
 /**
  * 配置同步的扩展节点
@@ -21,7 +21,7 @@ public interface IConfigNodeProcessor {
      * @param nodeEntity   节点信息
      * @param configEntity 配置信息
      */
-    void configPreProcessor(NodeEntity nodeEntity, ConfigEntity configEntity);
+    void configPreProcessor(MatrixNodeEntity nodeEntity, MatrixConfigEntity configEntity);
 
 
     /**
@@ -30,7 +30,7 @@ public interface IConfigNodeProcessor {
      * @param nodeEntity   节点信息
      * @param configEntity 配置信息
      */
-    void configPostProcessor(NodeEntity nodeEntity, ConfigEntity configEntity);
+    void configPostProcessor(MatrixNodeEntity nodeEntity, MatrixConfigEntity configEntity);
 
 
 }

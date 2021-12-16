@@ -2,10 +2,10 @@ package com.matrixboot.hub.manager.application.service;
 
 import com.matrixboot.hub.manager.application.NodeCreateCommand;
 import com.matrixboot.hub.manager.application.NodeUpdateCommand;
-import com.matrixboot.hub.manager.domain.entity.NodeEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixNodeEntity;
 import com.matrixboot.hub.manager.domain.repository.INodeEntityRepository;
 import com.matrixboot.hub.manager.domain.value.Capacity;
-import com.matrixboot.hub.manager.infrastructure.transverter.NodeFactory;
+import com.matrixboot.hub.manager.infrastructure.transverter.MatrixNodeFactory;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +39,7 @@ public class NodeManagerService {
      * @param command 创建命令
      */
     public void createNode(@Valid NodeCreateCommand command) {
-        repository.save(NodeFactory.from(command));
+        repository.save(MatrixNodeFactory.from(command));
     }
 
     /**
@@ -49,7 +49,7 @@ public class NodeManagerService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void update(@NotNull NodeUpdateCommand command) {
-        Optional<NodeEntity> optional = repository.findById(command.getId());
+        Optional<MatrixNodeEntity> optional = repository.findById(command.getId());
         optional.ifPresent(node -> {
             node.setName(command.getName());
             node.setCapacity(new Capacity(command.getCapacity()));

@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.domain.service;
 
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
-import com.matrixboot.hub.manager.domain.entity.NodeEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixNodeEntity;
 import com.matrixboot.hub.manager.infrastructure.extension.IConfigNodeProcessor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,12 @@ public class ConfigProcessorManagerService implements InitializingBean {
 
     private final List<IConfigNodeProcessor> processors;
 
-    public void configPreProcessor(@NotNull List<Pair<NodeEntity, ConfigEntity>> pairList) {
+    /**
+     * 配置与节点的后置处理
+     *
+     * @param pairList 节点与配置信息
+     */
+    public void configPreProcessor(@NotNull List<Pair<MatrixNodeEntity, MatrixConfigEntity>> pairList) {
         pairList.forEach(pair -> executeProcessors(pair.getFirst(), pair.getSecond()));
     }
 
@@ -37,10 +42,9 @@ public class ConfigProcessorManagerService implements InitializingBean {
      * @param node   节点信息
      * @param config 配置信息
      */
-    private void executeProcessors(NodeEntity node, @NotNull ConfigEntity config) {
+    private void executeProcessors(MatrixNodeEntity node, @NotNull MatrixConfigEntity config) {
         processors.forEach(processor -> processor.configPreProcessor(node, config));
     }
-
 
     /**
      * 对扩展点进行排序

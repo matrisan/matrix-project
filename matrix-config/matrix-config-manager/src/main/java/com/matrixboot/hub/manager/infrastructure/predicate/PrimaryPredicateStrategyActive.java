@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.infrastructure.predicate;
 
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
-import com.matrixboot.hub.manager.domain.entity.NodeEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixNodeEntity;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class PrimaryPredicateStrategyActive implements IPrimaryPredicateStrategy {
 
     @Override
-    public boolean match(NodeEntity nodeEntity, ConfigEntity configEntity) {
+    public boolean match(MatrixNodeEntity nodeEntity, MatrixConfigEntity configEntity) {
         return true;
     }
 }

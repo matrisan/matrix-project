@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.infrastructure.predicate;
 
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
-import com.matrixboot.hub.manager.domain.entity.NodeEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixNodeEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 public class DefaultPredicateStrategy implements IPrimaryPredicateStrategy {
 
     @Override
-    public boolean match(@NotNull NodeEntity nodeEntity, ConfigEntity configEntity) {
+    public boolean match(@NotNull MatrixNodeEntity nodeEntity, MatrixConfigEntity configEntity) {
         return nodeEntity.hasCapacity();
     }
 

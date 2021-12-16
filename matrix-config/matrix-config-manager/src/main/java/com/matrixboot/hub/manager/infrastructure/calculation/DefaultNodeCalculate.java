@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.infrastructure.calculation;
 
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
-import com.matrixboot.hub.manager.domain.entity.NodeEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixNodeEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 public class DefaultNodeCalculate implements IOptimizationPredicate {
 
     @Override
-    public int calculate(NodeEntity nodeEntity, ConfigEntity entity) {
+    public int calculate(MatrixNodeEntity nodeEntity, MatrixConfigEntity entity) {
         return 0;
     }
 

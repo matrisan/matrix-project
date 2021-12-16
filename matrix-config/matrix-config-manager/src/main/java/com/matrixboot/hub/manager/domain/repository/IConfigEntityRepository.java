@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.domain.repository;
 
 import com.matrixboot.hub.manager.domain.IConfigView;
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,7 +16,7 @@ import java.util.Optional;
  * @version 0.0.1
  */
 
-public interface IConfigEntityRepository extends JpaRepository<ConfigEntity, Long> {
+public interface IConfigEntityRepository extends JpaRepository<MatrixConfigEntity, Long> {
 
     /**
      * 分页查找所有的配置信息
@@ -33,6 +33,6 @@ public interface IConfigEntityRepository extends JpaRepository<ConfigEntity, Lon
      * @param domain 域名信息
      * @return Optional
      */
-    Optional<ConfigEntity> findByDomain(String domain);
+    Optional<MatrixConfigEntity> findByDomain(String domain);
 
 }

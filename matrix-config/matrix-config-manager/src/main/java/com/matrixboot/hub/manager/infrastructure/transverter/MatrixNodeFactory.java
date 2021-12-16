@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.infrastructure.transverter;
 
 import com.matrixboot.hub.manager.application.NodeCreateCommand;
-import com.matrixboot.hub.manager.domain.entity.NodeEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixNodeEntity;
 import com.matrixboot.hub.manager.domain.value.Capacity;
 import com.matrixboot.hub.manager.domain.value.Usage;
 import lombok.AccessLevel;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class NodeFactory {
+public final class MatrixNodeFactory {
 
     /**
      * 转换成节点信息
@@ -27,8 +27,8 @@ public final class NodeFactory {
      * @param command 创建命令
      * @return NodeEntity
      */
-    public static NodeEntity from(@NotNull NodeCreateCommand command) {
-        return NodeEntity.builder()
+    public static MatrixNodeEntity from(@NotNull NodeCreateCommand command) {
+        return MatrixNodeEntity.builder()
                 .name(command.getName())
                 .nodeVersion(command.getNodeVersion())
                 .capacity(new Capacity(command.getCapacity()))

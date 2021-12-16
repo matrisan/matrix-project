@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.infrastructure.calculation;
 
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
-import com.matrixboot.hub.manager.domain.entity.NodeEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixNodeEntity;
 
 /**
  * 优选策略
@@ -24,6 +24,6 @@ public interface IOptimizationPredicate {
      * @param configEntity 配置信息
      * @return int
      */
-    int calculate(NodeEntity nodeEntity, ConfigEntity configEntity);
+    int calculate(MatrixNodeEntity nodeEntity, MatrixConfigEntity configEntity);
 
 }

@@ -1,6 +1,6 @@
 package com.matrixboot.hub.manager.infrastructure.event;
 
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
@@ -16,9 +16,9 @@ public class ConfigDeleteEvent extends ApplicationEvent {
     private static final long serialVersionUID = 5634781866559738411L;
 
     @Getter
-    private final ConfigEntity entity;
+    private final MatrixConfigEntity entity;
 
-    public ConfigDeleteEvent(ConfigEntity source) {
+    public ConfigDeleteEvent(MatrixConfigEntity source) {
         super(source);
         this.entity = source;
     }

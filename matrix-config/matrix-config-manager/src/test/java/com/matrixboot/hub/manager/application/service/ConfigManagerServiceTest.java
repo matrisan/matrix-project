@@ -2,7 +2,7 @@ package com.matrixboot.hub.manager.application.service;
 
 import com.matrixboot.hub.manager.application.ConfigCreateCommand;
 import com.matrixboot.hub.manager.domain.IConfigView;
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
 import com.matrixboot.hub.manager.domain.repository.IConfigEntityRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,7 @@ class ConfigManagerServiceTest {
                 .source("11.11.11.11")
                 .build();
         configManagerService.configCreate(command);
-        Optional<ConfigEntity> optional = repository.findByDomain("www.matrixboot.com");
+        Optional<MatrixConfigEntity> optional = repository.findByDomain("www.matrixboot.com");
         Assertions.assertTrue(optional.isPresent());
     }
 

@@ -4,11 +4,12 @@ import com.matrixboot.hub.manager.application.ConfigCreateCommand;
 import com.matrixboot.hub.manager.application.ConfigDeleteCommand;
 import com.matrixboot.hub.manager.application.ConfigUpdateCommand;
 import com.matrixboot.hub.manager.domain.IConfigView;
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
 import com.matrixboot.hub.manager.domain.repository.IConfigEntityRepository;
 import com.matrixboot.hub.manager.infrastructure.event.ConfigDeleteEvent;
 import com.matrixboot.hub.manager.infrastructure.exception.ConfigNotFoundException;
-import com.matrixboot.hub.manager.infrastructure.transverter.ConfigFactory;
+import com.matrixboot.hub.manager.infrastructure.transverter.MatrixConfigFactory;
+import com.matrixboot.idempotent.annotation.Idempotent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -20,8 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -41,6 +44,12 @@ public class ConfigManagerService {
 
     private final ApplicationContext context;
 
+    /**
+     * 分页查找所有的配置信息
+     *
+     * @param pageable 分页信息
+     * @return Page
+     */
     public Page<IConfigView> findAll(Pageable pageable) {
         return repository.findAllBy(pageable, IConfigView.class);
     }
@@ -50,8 +59,9 @@ public class ConfigManagerService {
      *
      * @param command ConfigCreateCommand
      */
+    @Idempotent(value = "#command.domain", timeout = 10, unit = TimeUnit.SECONDS)
     public void configCreate(@Valid ConfigCreateCommand command) {
-        ConfigEntity save = repository.save(ConfigFactory.create(command));
+        MatrixConfigEntity save = repository.save(MatrixConfigFactory.create(command));
         log.info("配置已经保存 - {}", save);
     }
 
@@ -60,9 +70,9 @@ public class ConfigManagerService {
      *
      * @param command ConfigCreateCommand
      */
-    public void configCreate(@Valid @NotNull List<ConfigCreateCommand> command) {
+    public void configCreate(@NotNull @Size(min = 1) List<@Valid ConfigCreateCommand> command) {
         command.forEach(configCreateCommand -> {
-            ConfigEntity save = repository.save(ConfigFactory.create(configCreateCommand));
+            MatrixConfigEntity save = repository.save(MatrixConfigFactory.create(configCreateCommand));
             log.info("配置已经保存 - {}", save);
         });
     }
@@ -75,7 +85,7 @@ public class ConfigManagerService {
     @Transactional(rollbackFor = Exception.class)
     public void configUpdate(@Valid ConfigUpdateCommand command) {
         log.info("更新配置 - {}", command);
-        Optional<ConfigEntity> optional = repository.findById(command.getId());
+        Optional<MatrixConfigEntity> optional = repository.findById(command.getId());
         checkExist(optional, command);
         optional.ifPresent(config -> config.updateConfig(command, context));
     }
@@ -86,15 +96,15 @@ public class ConfigManagerService {
      * @param command 删除命令
      */
     @Transactional(rollbackFor = Exception.class)
-    public void deleteConfig(@Valid @NotNull ConfigDeleteCommand command) {
-        Optional<ConfigEntity> optional = repository.findById(command.getId());
+    public void deleteConfig(@NotNull @Valid ConfigDeleteCommand command) {
+        Optional<MatrixConfigEntity> optional = repository.findById(command.getId());
         optional.ifPresent(config -> {
             repository.delete(config);
             context.publishEvent(new ConfigDeleteEvent(config));
         });
     }
 
-    private void checkExist(@NotNull Optional<ConfigEntity> optional, ConfigUpdateCommand command) {
+    private void checkExist(@NotNull Optional<MatrixConfigEntity> optional, ConfigUpdateCommand command) {
         if (optional.isEmpty()) {
             throw new ConfigNotFoundException(command);
         }

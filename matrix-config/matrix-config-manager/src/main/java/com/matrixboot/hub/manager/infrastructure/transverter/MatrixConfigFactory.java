@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.infrastructure.transverter;
 
 import com.matrixboot.hub.manager.application.ConfigCreateCommand;
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
 import com.matrixboot.hub.manager.domain.value.Resources;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -18,10 +18,16 @@ import org.jetbrains.annotations.NotNull;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class ConfigFactory {
+public final class MatrixConfigFactory {
 
-    public static ConfigEntity create(@NotNull ConfigCreateCommand command) {
-        return ConfigEntity.builder()
+    /**
+     * 创建 MatrixConfigEntity
+     *
+     * @param command ConfigCreateCommand
+     * @return MatrixConfigEntity
+     */
+    public static MatrixConfigEntity create(@NotNull ConfigCreateCommand command) {
+        return MatrixConfigEntity.builder()
                 .namespace(command.getNamespace())
                 .domain(command.getDomain())
                 .source(command.getSource())

@@ -1,8 +1,8 @@
 package com.matrixboot.hub.manager.application.service;
 
 import com.matrixboot.hub.manager.application.ConfigSyncCommand;
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
-import com.matrixboot.hub.manager.domain.entity.NodeEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixNodeEntity;
 import com.matrixboot.hub.manager.domain.repository.IConfigEntityRepository;
 import com.matrixboot.hub.manager.domain.repository.INodeEntityRepository;
 import com.matrixboot.hub.manager.domain.service.ConfigProcessorManagerService;
@@ -54,12 +54,12 @@ public class ConfigScheduleService {
     @Async
     @Transactional(rollbackFor = Exception.class)
     public void syncConfig(@NotNull ConfigSyncCommand command) {
-        Optional<ConfigEntity> optional = configRepository.findById(command.getId());
+        Optional<MatrixConfigEntity> optional = configRepository.findById(command.getId());
         optional.ifPresent(config -> {
             log.info("需要同步的配置 - {}", config);
-            List<NodeEntity> allNodes = nodeRepository.findAll();
-            List<NodeEntity> predicate = primaryStrategyService.primaryPredicate(allNodes, config);
-            List<Pair<NodeEntity, ConfigEntity>> pairList = optimizationStrategyService.optimizationPredicate(predicate, config);
+            List<MatrixNodeEntity> allNodes = nodeRepository.findAll();
+            List<MatrixNodeEntity> predicate = primaryStrategyService.primaryPredicate(allNodes, config);
+            List<Pair<MatrixNodeEntity, MatrixConfigEntity>> pairList = optimizationStrategyService.optimizationPredicate(predicate, config);
             configSyncService.configPreProcessor(pairList);
         });
     }

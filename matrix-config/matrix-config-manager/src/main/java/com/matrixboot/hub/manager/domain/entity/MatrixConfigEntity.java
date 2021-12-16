@@ -57,7 +57,7 @@ import javax.persistence.UniqueConstraint;
 @DynamicUpdate
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "uk_domain", columnNames = "domain")})
-public class ConfigEntity extends BaseEntity {
+public class MatrixConfigEntity extends BaseEntity {
 
     private static final long serialVersionUID = -5523364931796440110L;
 
@@ -115,10 +115,9 @@ public class ConfigEntity extends BaseEntity {
      */
     @ToString.Exclude
     @JsonBackReference
-    @ManyToOne(targetEntity = NodeEntity.class, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = MatrixNodeEntity.class, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "node_id", referencedColumnName = "id")
-    private NodeEntity node;
-
+    private MatrixNodeEntity node;
 
     public boolean haveResource() {
         return true;
@@ -130,7 +129,6 @@ public class ConfigEntity extends BaseEntity {
         this.source = (command.getSource());
         applicationContext.publishEvent(new ConfigUpdateEvent(this));
     }
-
 
     /**
      * 新建事件

@@ -1,6 +1,6 @@
 package com.matrixboot.hub.manager.infrastructure.version;
 
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,7 +34,7 @@ public class RemoteVersionV2 implements IRemoteVersion<VersionV2> {
     private IFeignInput feignInput;
 
     @Override
-    public VersionV2 convertor(@NotNull ConfigEntity entity) {
+    public VersionV2 convertor(@NotNull MatrixConfigEntity entity) {
         return VersionV2.builder()
                 .hostname(entity.getDomain())
                 .source(entity.getSource())

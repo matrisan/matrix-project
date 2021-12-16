@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.infrastructure.extension;
 
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
-import com.matrixboot.hub.manager.domain.entity.NodeEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixNodeEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -19,12 +19,12 @@ import org.springframework.stereotype.Component;
 public class ConfigNodeDnsBindProcessor implements IConfigNodeProcessor {
 
     @Override
-    public void configPreProcessor(NodeEntity nodeEntity, ConfigEntity configEntity) {
+    public void configPreProcessor(MatrixNodeEntity nodeEntity, MatrixConfigEntity configEntity) {
         log.info("绑定 DNS");
     }
 
     @Override
-    public void configPostProcessor(NodeEntity nodeEntity, ConfigEntity configEntity) {
+    public void configPostProcessor(MatrixNodeEntity nodeEntity, MatrixConfigEntity configEntity) {
         log.info("解绑 DNS");
     }
 }

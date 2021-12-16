@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.domain.service;
 
-import com.matrixboot.hub.manager.domain.entity.ConfigEntity;
-import com.matrixboot.hub.manager.domain.entity.NodeEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
+import com.matrixboot.hub.manager.domain.entity.MatrixNodeEntity;
 import com.matrixboot.hub.manager.infrastructure.calculation.IOptimizationPredicate;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,14 @@ public class OptimizationStrategyManagerService {
 
     private final Map<String, IOptimizationPredicate> calculateMap;
 
-    public List<Pair<NodeEntity, ConfigEntity>> optimizationPredicate(@NotNull List<NodeEntity> nodes, ConfigEntity config) {
+    /**
+     * 优选节点
+     *
+     * @param nodes  节点信息
+     * @param config 配置信息
+     * @return List
+     */
+    public List<Pair<MatrixNodeEntity, MatrixConfigEntity>> optimizationPredicate(@NotNull List<MatrixNodeEntity> nodes, MatrixConfigEntity config) {
         return nodes.stream().map(x -> optimizationPredicate(x, config))
                 .sorted((o1, o2) -> o2.getFirst().compareTo(o1.getFirst()))
                 .limit(2)
@@ -47,8 +54,8 @@ public class OptimizationStrategyManagerService {
      */
     @Contract("null, _ -> fail")
     @NotNull
-    private Pair<Integer, NodeEntity> optimizationPredicate(NodeEntity node, ConfigEntity config) {
-        Pair<Integer, NodeEntity> pair = Pair.of(calculate(node, config), node);
+    private Pair<Integer, MatrixNodeEntity> optimizationPredicate(MatrixNodeEntity node, MatrixConfigEntity config) {
+        Pair<Integer, MatrixNodeEntity> pair = Pair.of(calculate(node, config), node);
         log.info("计算节点评分 - {}", pair);
         return pair;
     }
@@ -60,7 +67,7 @@ public class OptimizationStrategyManagerService {
      * @param config 配置信息
      * @return int
      */
-    private int calculate(NodeEntity node, @NotNull ConfigEntity config) {
+    private int calculate(MatrixNodeEntity node, @NotNull MatrixConfigEntity config) {
         int calculate = calculateMap.getOrDefault(config.getSelector(), defaultOptimizationPredicate).calculate(node, config);
         log.info("计算节点评分 - {} - {} - {}", calculate, node, config);
         return calculate;
