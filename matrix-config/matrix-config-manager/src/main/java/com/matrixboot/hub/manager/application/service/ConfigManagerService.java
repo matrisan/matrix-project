@@ -104,6 +104,12 @@ public class ConfigManagerService {
         });
     }
 
+    /**
+     * 检查配置是否存在
+     *
+     * @param optional 配置项
+     * @param command  更新命令
+     */
     private void checkExist(@NotNull Optional<MatrixConfigEntity> optional, ConfigUpdateCommand command) {
         if (optional.isEmpty()) {
             throw new ConfigNotFoundException(command);
