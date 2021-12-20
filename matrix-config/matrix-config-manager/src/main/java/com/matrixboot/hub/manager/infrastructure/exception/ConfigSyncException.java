@@ -1,7 +1,7 @@
 package com.matrixboot.hub.manager.infrastructure.exception;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 
 @Slf4j
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
 public class ConfigSyncException extends AbstractConfigSyncException {
 

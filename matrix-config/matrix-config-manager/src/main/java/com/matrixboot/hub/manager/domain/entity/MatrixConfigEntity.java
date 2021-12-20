@@ -8,6 +8,7 @@ import com.matrixboot.hub.manager.application.ConfigUpdateCommand;
 import com.matrixboot.hub.manager.domain.value.Resources;
 import com.matrixboot.hub.manager.infrastructure.converter.ResourceConverter;
 import com.matrixboot.hub.manager.infrastructure.event.ConfigUpdateEvent;
+import com.matrixboot.hub.manager.infrastructure.inspect.IConfigInspect;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -81,6 +82,12 @@ public class MatrixConfigEntity extends BaseEntity {
     String domain;
 
     /**
+     * 域名
+     */
+    @Column(columnDefinition = "CHAR(20) COMMENT 'domain'")
+    String port;
+
+    /**
      * 源站地址
      */
     @Column(nullable = false, columnDefinition = "CHAR(20) COMMENT 'source'")
@@ -89,6 +96,7 @@ public class MatrixConfigEntity extends BaseEntity {
     /**
      * 状态
      */
+    @Column(columnDefinition = "INT(1) DEFAULT 0 COMMENT '状态'")
     Integer status;
 
     /**
@@ -112,10 +120,32 @@ public class MatrixConfigEntity extends BaseEntity {
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH}, mappedBy = "configs")
     private List<MatrixNodeEntity> nodes;
 
-    public boolean haveResource() {
-        return true;
+
+    /**
+     * 检查配置是否符合要求
+     *
+     * @param inspectList 配置检查项
+     */
+    public void inspect(@NotNull List<IConfigInspect> inspectList) {
+        MatrixConfigEntity config = this;
+        inspectList.forEach(iConfigInspect -> iConfigInspect.inspect(config));
     }
 
+    public void disable() {
+        this.status = 0;
+    }
+
+    public void enable() {
+        this.status = 1;
+    }
+
+
+    /**
+     * 更新配置
+     *
+     * @param command            更新命令
+     * @param applicationContext ApplicationContext
+     */
     public void updateConfig(@NotNull ConfigUpdateCommand command, @NotNull ApplicationContext applicationContext) {
         this.namespace = (command.getNamespace());
         this.domain = (command.getDomain());

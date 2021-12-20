@@ -42,6 +42,7 @@ public class ConfigNodePublishProcessor implements IConfigNodeProcessor {
         log.info("下发配置");
         IRemoteVersion<? extends BaseVersion> version = versionMap.get(nodeEntity.getNodeVersion());
         version.doTransfer(version.convertor(configEntity));
+        configEntity.enable();
     }
 
     @Override

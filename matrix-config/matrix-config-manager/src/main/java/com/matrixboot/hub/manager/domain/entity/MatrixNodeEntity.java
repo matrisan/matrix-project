@@ -75,6 +75,12 @@ public class MatrixNodeEntity extends BaseEntity {
     String name;
 
     /**
+     * 状态
+     */
+    @Column(columnDefinition = "INT(1) DEFAULT 1 COMMENT '状态'")
+    Integer status;
+
+    /**
      * 节点独享信息,一般时候用在某些
      */
     @Column(columnDefinition = "VARCHAR(128) COMMENT '节点独享信息'")
@@ -109,9 +115,8 @@ public class MatrixNodeEntity extends BaseEntity {
     @ManyToMany(targetEntity = MatrixConfigEntity.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "matrix_mid_config_node",
-            joinColumns = @JoinColumn(name = "mid_node_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "mid_config_id", referencedColumnName = "id"),
-            foreignKey = @ForeignKey(value = NO_CONSTRAINT)
+            joinColumns = @JoinColumn(name = "mid_node_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "none", value = NO_CONSTRAINT)),
+            inverseJoinColumns = @JoinColumn(name = "mid_config_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "none", value = NO_CONSTRAINT))
     )
     private List<MatrixConfigEntity> configs;
 

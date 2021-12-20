@@ -8,6 +8,7 @@ import com.matrixboot.hub.manager.domain.repository.INodeEntityRepository;
 import com.matrixboot.hub.manager.domain.service.ConfigProcessorManagerService;
 import com.matrixboot.hub.manager.domain.service.OptimizationStrategyManagerService;
 import com.matrixboot.hub.manager.domain.service.PrimaryStrategyManagerService;
+import com.matrixboot.hub.manager.infrastructure.inspect.IConfigInspect;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -41,7 +42,10 @@ public class ConfigScheduleService {
 
     private final OptimizationStrategyManagerService optimizationStrategyService;
 
+    private final List<IConfigInspect> inspectList;
+
     /**
+     * 0.配置自检是否符合要求;
      * 1.获取所有的节点;
      * 2.查找能找到使用的节点(预选节点);
      * 3.对所有的节点打分(优选节点);只保留前面两个节点;
@@ -55,6 +59,7 @@ public class ConfigScheduleService {
         Optional<MatrixConfigEntity> optional = configRepository.findById(command.getId());
         optional.ifPresent(config -> {
             log.info("需要同步的配置 - {}", config);
+            config.inspect(inspectList);
             List<MatrixNodeEntity> allNodes = nodeRepository.findAll();
             List<MatrixNodeEntity> predicate = primaryStrategyService.primaryPredicate(allNodes, config);
             List<Pair<MatrixNodeEntity, MatrixConfigEntity>> pairList = optimizationStrategyService.optimizationPredicate(predicate, config);
