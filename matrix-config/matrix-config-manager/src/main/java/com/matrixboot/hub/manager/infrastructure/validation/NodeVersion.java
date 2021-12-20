@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = NodeVersionValidator.class)
 public @interface NodeVersion {
 
-    String message() default "版本号不正确";
+    String message() default "节点的版本号不正确";
 
     Class<?>[] groups() default {};
 

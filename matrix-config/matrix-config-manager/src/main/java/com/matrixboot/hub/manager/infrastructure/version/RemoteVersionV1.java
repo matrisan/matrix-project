@@ -46,7 +46,6 @@ public class RemoteVersionV1 implements IRemoteVersion<VersionV1> {
         redisStreamInput.stream(data);
     }
 
-
     @RedisStreamClient("client")
     interface IRedisStreamInput {
 
@@ -57,10 +56,8 @@ public class RemoteVersionV1 implements IRemoteVersion<VersionV1> {
          */
         @RedisStreamEndpoint("test_key")
         void stream(BaseVersion versioned);
-
     }
 }
-
 
 @Slf4j
 @Getter
@@ -71,6 +68,8 @@ public class RemoteVersionV1 implements IRemoteVersion<VersionV1> {
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class VersionV1 implements BaseVersion {
+
+    private static final long serialVersionUID = -1014614902579988619L;
 
     String domain;
 

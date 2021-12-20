@@ -1,5 +1,7 @@
 package com.matrixboot.hub.manager.infrastructure.version;
 
+import java.io.Serializable;
+
 /**
  * 基础
  * <p>
@@ -8,5 +10,5 @@ package com.matrixboot.hub.manager.infrastructure.version;
  * @author shishaodong
  * @version 0.0.1
  */
-public interface BaseVersion {
+public interface BaseVersion extends Serializable {
 }

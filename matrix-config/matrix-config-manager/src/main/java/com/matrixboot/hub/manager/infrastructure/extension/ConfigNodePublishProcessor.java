@@ -51,16 +51,16 @@ public class ConfigNodePublishProcessor implements IConfigNodeProcessor {
     }
 
     /**
-     * 前置处理
+     * 前置/后置处理
      *
      * @param nodeEntity   节点信息
      * @param configEntity 配置信息
      * @param e            异常信息
      */
     @Recover
-    public void configProcessorRecover(MatrixNodeEntity nodeEntity, MatrixConfigEntity configEntity, @NotNull Exception e) {
+    public void configProcessorRecover(@NotNull MatrixNodeEntity nodeEntity, @NotNull MatrixConfigEntity configEntity, @NotNull Exception e) {
         log.info("出现异常 {}", e.getMessage());
-        throw new ConfigSyncException();
+        throw new ConfigSyncException(nodeEntity.getId(), configEntity.getId());
     }
 
 }

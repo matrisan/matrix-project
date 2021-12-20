@@ -49,7 +49,6 @@ public class RemoteVersionV2 implements IRemoteVersion<VersionV2> {
         feignInput.stream(data);
     }
 
-
     @FeignClient(name = "client", url = "http://127.0.0.1:8788")
     interface IFeignInput {
 
@@ -61,7 +60,6 @@ public class RemoteVersionV2 implements IRemoteVersion<VersionV2> {
         @PostMapping("/test_key")
         void stream(@RequestBody BaseVersion versioned);
     }
-
 }
 
 @Slf4j
@@ -73,6 +71,8 @@ public class RemoteVersionV2 implements IRemoteVersion<VersionV2> {
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class VersionV2 implements BaseVersion {
+
+    private static final long serialVersionUID = -2502509127815698037L;
 
     String hostname;
 

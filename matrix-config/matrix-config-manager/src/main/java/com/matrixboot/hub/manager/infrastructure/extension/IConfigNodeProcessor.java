@@ -23,7 +23,6 @@ public interface IConfigNodeProcessor {
      */
     void configPreProcessor(MatrixNodeEntity nodeEntity, MatrixConfigEntity configEntity);
 
-
     /**
      * 回退/删除方法
      *
@@ -31,6 +30,5 @@ public interface IConfigNodeProcessor {
      * @param configEntity 配置信息
      */
     void configPostProcessor(MatrixNodeEntity nodeEntity, MatrixConfigEntity configEntity);
-
 
 }
