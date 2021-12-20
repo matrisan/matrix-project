@@ -56,5 +56,4 @@ public class NodeManagerService {
             node.setNodeVersion(command.getNodeVersion());
         });
     }
-
 }
