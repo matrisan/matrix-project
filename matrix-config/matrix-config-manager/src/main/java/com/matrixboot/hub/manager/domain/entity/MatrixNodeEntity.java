@@ -20,16 +20,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.List;
+
+import static javax.persistence.ConstraintMode.NO_CONSTRAINT;
 
 /**
  * create in 2021/9/14 5:53 下午
@@ -49,7 +56,7 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 @Entity
-@Table(name = "NodeEntity")
+@Table(uniqueConstraints = {@UniqueConstraint(name = "uk_name", columnNames = "name")})
 public class MatrixNodeEntity extends BaseEntity {
 
     private static final long serialVersionUID = -8462673582623260919L;
@@ -99,8 +106,14 @@ public class MatrixNodeEntity extends BaseEntity {
      */
     @ToString.Exclude
     @JsonManagedReference
-    @OneToMany(mappedBy = "node", fetch = FetchType.EAGER)
-    private List<MatrixConfigEntity> configList;
+    @ManyToMany(targetEntity = MatrixConfigEntity.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "matrix_mid_config_node",
+            joinColumns = @JoinColumn(name = "mid_node_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "mid_config_id", referencedColumnName = "id"),
+            foreignKey = @ForeignKey(value = NO_CONSTRAINT)
+    )
+    private List<MatrixConfigEntity> configs;
 
     /**
      * 新增配置
@@ -108,7 +121,7 @@ public class MatrixNodeEntity extends BaseEntity {
      * @param config 配置信息
      */
     public void addNewConfig(MatrixConfigEntity config) {
-        configList.add(config);
+        configs.add(config);
         this.resourceUsage.increase(config.getResources());
     }
 
@@ -118,7 +131,7 @@ public class MatrixNodeEntity extends BaseEntity {
      * @param config 配置信息
      */
     public void deleteConfig(MatrixConfigEntity config) {
-        configList.remove(config);
+        configs.remove(config);
         this.resourceUsage.reduce(config.getResources());
     }
 

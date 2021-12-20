@@ -32,10 +32,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.util.List;
 
 /**
  * <p>
@@ -105,19 +105,12 @@ public class MatrixConfigEntity extends BaseEntity {
     Resources resources;
 
     /**
-     * 节点的 ID
-     */
-    @Column(name = "node_id", insertable = false, updatable = false)
-    Long nodeId;
-
-    /**
      * 节点详情
      */
     @ToString.Exclude
     @JsonBackReference
-    @ManyToOne(targetEntity = MatrixNodeEntity.class, cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "node_id", referencedColumnName = "id")
-    private MatrixNodeEntity node;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH, CascadeType.DETACH}, mappedBy = "configs")
+    private List<MatrixNodeEntity> nodes;
 
     public boolean haveResource() {
         return true;
