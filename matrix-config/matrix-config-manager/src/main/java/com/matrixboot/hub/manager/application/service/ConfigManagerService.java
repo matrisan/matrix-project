@@ -25,6 +25,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -71,10 +72,9 @@ public class ConfigManagerService {
      * @param command ConfigCreateCommand
      */
     public void configCreate(@NotNull @Size(min = 1) List<@Valid ConfigCreateCommand> command) {
-        command.forEach(configCreateCommand -> {
-            MatrixConfigEntity save = repository.save(MatrixConfigFactory.create(configCreateCommand));
-            log.info("配置已经保存 - {}", save);
-        });
+        List<MatrixConfigEntity> list = command.stream().map(MatrixConfigFactory::create).collect(Collectors.toList());
+        repository.saveAll(list);
+        log.info("配置已经保存 - {}", list);
     }
 
     /**

@@ -1,5 +1,10 @@
 package com.matrixboot.hub.manager.infrastructure.version;
 
+import cn.hutool.core.net.Ipv4Util;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 
 /**
  * <p>
@@ -37,7 +43,7 @@ public class RemoteVersionV2 implements IRemoteVersion<VersionV2> {
     public VersionV2 convertor(@NotNull MatrixConfigEntity entity) {
         return VersionV2.builder()
                 .hostname(entity.getDomain())
-                .source(entity.getSource())
+                .ip(entity.getSource())
                 .status(entity.getStatus())
                 .selector(entity.getSelector())
                 .build();
@@ -74,11 +80,29 @@ class VersionV2 implements BaseVersion {
 
     private static final long serialVersionUID = -2502509127815698037L;
 
+    /**
+     * @see MatrixConfigEntity#getDomain()
+     */
     String hostname;
 
-    String source;
+    /**
+     * @see MatrixConfigEntity#getSource()
+     */
+    @JsonSerialize(using = IpSerializer.class)
+    String ip;
 
     Integer status;
 
     String selector;
 }
+
+class IpSerializer extends JsonSerializer<String> {
+
+    @Override
+    public void serialize(String s, @NotNull JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+        jsonGenerator.writeObject(Ipv4Util.ipv4ToLong(s));
+    }
+}
+
+
+

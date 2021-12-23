@@ -1,6 +1,7 @@
 package com.matrixboot.hub.manager;
 
 import com.matrixboot.redis.annotation.EnableRedisStreamClients;
+import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -22,6 +23,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAspectJAutoProxy
 @EnableRedisStreamClients
 @SpringBootApplication
+@EnableSchedulerLock(defaultLockAtMostFor = "PT30S")
 public class SpringBootManagerApplication {
 
     public static void main(String[] args) {
