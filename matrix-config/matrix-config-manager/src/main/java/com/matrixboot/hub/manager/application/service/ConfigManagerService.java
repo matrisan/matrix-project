@@ -2,18 +2,21 @@ package com.matrixboot.hub.manager.application.service;
 
 import com.matrixboot.hub.manager.application.ConfigCreateCommand;
 import com.matrixboot.hub.manager.application.ConfigDeleteCommand;
+import com.matrixboot.hub.manager.application.ConfigSyncCommand;
+import com.matrixboot.hub.manager.application.ConfigSyncTypeEnum;
 import com.matrixboot.hub.manager.application.ConfigUpdateCommand;
 import com.matrixboot.hub.manager.domain.IConfigView;
 import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
 import com.matrixboot.hub.manager.domain.repository.IConfigEntityRepository;
 import com.matrixboot.hub.manager.infrastructure.event.ConfigDeleteEvent;
+import com.matrixboot.hub.manager.infrastructure.event.ConfigUpdateEvent;
+import com.matrixboot.hub.manager.infrastructure.event.IEventPublisher;
 import com.matrixboot.hub.manager.infrastructure.exception.ConfigNotFoundException;
 import com.matrixboot.hub.manager.infrastructure.transverter.MatrixConfigFactory;
 import com.matrixboot.idempotent.annotation.Idempotent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import static com.matrixboot.hub.manager.infrastructure.event.MqTopicEnum.CONFIG_CREATE;
+import static com.matrixboot.hub.manager.infrastructure.event.MqTopicEnum.CONFIG_DELETE;
+import static com.matrixboot.hub.manager.infrastructure.event.MqTopicEnum.CONFIG_UPDATE;
+
 
 /**
  * <p>
@@ -41,9 +49,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ConfigManagerService {
 
-    private final IConfigEntityRepository repository;
+    private final IEventPublisher eventPublisher;
 
-    private final ApplicationContext context;
+    private final IConfigEntityRepository repository;
 
     /**
      * 分页查找所有的配置信息
@@ -60,10 +68,11 @@ public class ConfigManagerService {
      *
      * @param command ConfigCreateCommand
      */
-    @Idempotent(value = "#command.domain", timeout = 10, unit = TimeUnit.SECONDS)
+    @Idempotent(value = "#command.domain", timeout = 60, unit = TimeUnit.SECONDS)
     public void configCreate(@Valid ConfigCreateCommand command) {
         MatrixConfigEntity save = repository.save(MatrixConfigFactory.create(command));
         log.info("配置已经保存 - {}", save);
+        eventPublisher.publish(new ConfigSyncCommand(save.getId(), ConfigSyncTypeEnum.CREATE), CONFIG_CREATE.name());
     }
 
     /**
@@ -71,10 +80,12 @@ public class ConfigManagerService {
      *
      * @param command ConfigCreateCommand
      */
+    @Idempotent(value = "@idempotentConfigCreateService.convert(#command)", timeout = 60, unit = TimeUnit.SECONDS)
     public void configCreate(@NotNull @Size(min = 1) List<@Valid ConfigCreateCommand> command) {
         List<MatrixConfigEntity> list = command.stream().map(MatrixConfigFactory::create).collect(Collectors.toList());
-        repository.saveAll(list);
+        List<MatrixConfigEntity> entities = repository.saveAll(list);
         log.info("配置已经保存 - {}", list);
+        eventPublisher.publish(convertToCommand(entities), CONFIG_CREATE.name());
     }
 
     /**
@@ -87,7 +98,10 @@ public class ConfigManagerService {
         log.info("更新配置 - {}", command);
         Optional<MatrixConfigEntity> optional = repository.findById(command.getId());
         checkExist(optional, command);
-        optional.ifPresent(config -> config.updateConfig(command, context));
+        optional.ifPresent(config -> {
+            config.updateConfig(command);
+            eventPublisher.publish(new ConfigUpdateEvent(config), CONFIG_UPDATE.name());
+        });
     }
 
     /**
@@ -100,7 +114,7 @@ public class ConfigManagerService {
         Optional<MatrixConfigEntity> optional = repository.findById(command.getId());
         optional.ifPresent(config -> {
             repository.delete(config);
-            context.publishEvent(new ConfigDeleteEvent(config));
+            eventPublisher.publish(new ConfigDeleteEvent(config), CONFIG_DELETE.name());
         });
     }
 
@@ -114,5 +128,18 @@ public class ConfigManagerService {
         if (optional.isEmpty()) {
             throw new ConfigNotFoundException(command);
         }
+    }
+
+    /**
+     * 转换成命令
+     *
+     * @param entities MatrixConfigEntity
+     * @return List
+     */
+    @NotNull
+    private List<ConfigSyncCommand> convertToCommand(@NotNull List<MatrixConfigEntity> entities) {
+        return entities.stream()
+                .map(one -> new ConfigSyncCommand(one.getId(), ConfigSyncTypeEnum.CREATE))
+                .collect(Collectors.toList());
     }
 }

@@ -1,6 +1,6 @@
 package com.matrixboot.hub.manager.application.service;
 
-import com.matrixboot.doorkeeper.annotation.Doorkeeper;
+import com.matrixboot.doorkeeper.annotation.Brake;
 import com.matrixboot.hub.manager.application.ConfigSyncCommand;
 import com.matrixboot.hub.manager.domain.entity.MatrixConfigEntity;
 import com.matrixboot.hub.manager.domain.entity.MatrixNodeEntity;
@@ -55,7 +55,7 @@ public class ConfigScheduleService {
      * @param command 同步命令
      */
     @Async
-    @Doorkeeper("doorkeeper")
+    @Brake("Brake")
     @Transactional(rollbackFor = Exception.class)
     public void syncConfig(@NotNull ConfigSyncCommand command) {
         Optional<MatrixConfigEntity> optional = configRepository.findById(command.getId());

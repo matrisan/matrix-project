@@ -10,6 +10,9 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+
 /**
  * <p>
  * create in 2021/9/15 11:03 下午
@@ -25,9 +28,12 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ConfigSyncCommand extends ConfigDeleteCommand {
+public class ConfigSyncCommand implements Serializable {
 
     private static final long serialVersionUID = 703132862903262977L;
+
+    @NotNull
+    Long id;
 
     ConfigSyncTypeEnum configSyncType;
 

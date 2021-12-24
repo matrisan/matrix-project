@@ -2,12 +2,9 @@ package com.matrixboot.hub.manager.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.matrixboot.hub.common.entity.BaseEntity;
-import com.matrixboot.hub.manager.application.ConfigSyncCommand;
-import com.matrixboot.hub.manager.application.ConfigSyncTypeEnum;
 import com.matrixboot.hub.manager.application.ConfigUpdateCommand;
 import com.matrixboot.hub.manager.domain.value.Resources;
 import com.matrixboot.hub.manager.infrastructure.converter.ResourceConverter;
-import com.matrixboot.hub.manager.infrastructure.event.ConfigUpdateEvent;
 import com.matrixboot.hub.manager.infrastructure.inspect.IConfigInspect;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -21,9 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.context.ApplicationContext;
-import org.springframework.data.domain.AfterDomainEventPublication;
-import org.springframework.data.domain.DomainEvents;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -143,36 +137,35 @@ public class MatrixConfigEntity extends BaseEntity {
     /**
      * 更新配置
      *
-     * @param command            更新命令
-     * @param applicationContext ApplicationContext
+     * @param command 更新命令
      */
-    public void updateConfig(@NotNull ConfigUpdateCommand command, @NotNull ApplicationContext applicationContext) {
+    public void updateConfig(@NotNull ConfigUpdateCommand command) {
         this.namespace = (command.getNamespace());
         this.domain = (command.getDomain());
         this.source = (command.getSource());
-        applicationContext.publishEvent(new ConfigUpdateEvent(this));
+//        applicationContext.publishEvent(new ConfigUpdateEvent(this));
     }
 
-    /**
-     * 新建事件
-     *
-     * @return ConfigSyncCommand
-     */
-    @DomainEvents
-    ConfigSyncCommand domainEvents() {
-        log.info("ConfigEntity - domainEvents - {}", this);
-        ConfigSyncCommand configSyncCommand = new ConfigSyncCommand();
-        configSyncCommand.setId(this.id);
-        configSyncCommand.setConfigSyncType(ConfigSyncTypeEnum.CREATE);
-        return configSyncCommand;
-    }
-
-    /**
-     * 事件回调
-     */
-    @AfterDomainEventPublication
-    void callbackMethod() {
-        log.info("AfterDomainEventPublication");
-    }
+//    /**
+//     * 新建事件
+//     *
+//     * @return ConfigSyncCommand
+//     */
+//    @DomainEvents
+//    ConfigSyncCommand domainEvents() {
+//        log.info("ConfigEntity - domainEvents - {}", this);
+//        ConfigSyncCommand configSyncCommand = new ConfigSyncCommand();
+//        configSyncCommand.setId(this.id);
+//        configSyncCommand.setConfigSyncType(ConfigSyncTypeEnum.CREATE);
+//        return configSyncCommand;
+//    }
+//
+//    /**
+//     * 事件回调
+//     */
+//    @AfterDomainEventPublication
+//    void callbackMethod() {
+//        log.info("AfterDomainEventPublication");
+//    }
 
 }
