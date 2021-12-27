@@ -143,7 +143,6 @@ public class MatrixConfigEntity extends BaseEntity {
         this.namespace = (command.getNamespace());
         this.domain = (command.getDomain());
         this.source = (command.getSource());
-//        applicationContext.publishEvent(new ConfigUpdateEvent(this));
     }
 
 //    /**
