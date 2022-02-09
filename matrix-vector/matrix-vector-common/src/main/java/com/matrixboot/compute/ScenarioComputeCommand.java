@@ -1,6 +1,6 @@
 package com.matrixboot.compute;
 
-import com.matrixboot.strategy.ScenarioMetaEntity;
+import com.matrixboot.strategy.ScenarioMeta;
 
 /**
  * <p>
@@ -9,5 +9,5 @@ import com.matrixboot.strategy.ScenarioMetaEntity;
  * @author shishaodong
  * @version 0.0.1
  */
-public class ScenarioComputeCommand extends ScenarioMetaEntity {
+public class ScenarioComputeCommand extends ScenarioMeta {
 }

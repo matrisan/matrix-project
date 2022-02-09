@@ -2,7 +2,7 @@ package com.matrixboot.server.compute.infrastructure.repository;
 
 import com.matrixboot.server.compute.domain.entity.ScenarioComputeEntity;
 import com.matrixboot.server.compute.domain.repository.IScenarioComputeRepository;
-import com.matrixboot.strategy.ScenarioMetaEntity;
+import com.matrixboot.strategy.ScenarioMeta;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 public class ScenarioComputeRepositoryImpl implements IScenarioComputeRepository {
 
     @Override
-    public List<ScenarioComputeEntity> findAll(ScenarioMetaEntity scenarioMetaEntity) {
+    public List<ScenarioComputeEntity> findAll(ScenarioMeta scenarioMetaEntity) {
         return null;
     }
 }

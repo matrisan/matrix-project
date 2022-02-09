@@ -38,6 +38,8 @@ import javax.persistence.Id;
 @Entity
 public class SpeculateEntity extends BaseEntity {
 
+    private static final long serialVersionUID = -5038607460247974782L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;

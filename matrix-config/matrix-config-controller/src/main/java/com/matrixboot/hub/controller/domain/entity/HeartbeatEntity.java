@@ -38,6 +38,8 @@ import javax.persistence.Id;
 @Entity
 public class HeartbeatEntity extends BaseEntity {
 
+    private static final long serialVersionUID = -7263659389370708788L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;

@@ -1,12 +1,10 @@
 package com.matrixboot.server.evaluate.infrastructure.interceptor;
 
-import com.matrixboot.server.evaluate.domain.entity.EvaluateEntity;
-import com.matrixboot.server.evaluate.infrastructure.context.AbstractEvaluateContext;
+import com.matrixboot.server.evaluate.domain.entity.RequestEventEntity;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 /**
  * <p>
@@ -17,15 +15,16 @@ import javax.annotation.Resource;
  */
 
 @Slf4j
-@Order(1)
+@Order(4)
 @Component
-public class DecisionInitStrategyInterceptor implements IDecisionInterceptor {
+@AllArgsConstructor
+public class DecisionInitStrategyInterceptor implements IEventInterceptor {
 
-    @Resource
-    private AbstractEvaluateContext context;
+//    @Resource
+//    private AbstractEvaluateContext context;
 
     @Override
-    public void invoke(EvaluateEntity entity) {
+    public void invoke(RequestEventEntity entity) {
         log.info("初始化策略");
     }
 }

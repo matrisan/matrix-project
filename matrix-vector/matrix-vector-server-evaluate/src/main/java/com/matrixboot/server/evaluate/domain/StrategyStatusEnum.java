@@ -1,4 +1,4 @@
-package com.matrixboot.server.evaluate.application;
+package com.matrixboot.server.evaluate.domain;
 
 /**
  * <p>

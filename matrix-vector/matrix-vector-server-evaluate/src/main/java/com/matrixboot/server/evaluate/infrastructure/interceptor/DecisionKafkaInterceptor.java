@@ -1,8 +1,11 @@
 package com.matrixboot.server.evaluate.infrastructure.interceptor;
 
-import com.matrixboot.server.evaluate.domain.entity.EvaluateEntity;
+import com.matrixboot.server.evaluate.domain.entity.RequestEventEntity;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 
 /**
  * 向 Kafka 发送数据
@@ -14,11 +17,14 @@ import org.springframework.core.annotation.Order;
  */
 
 @Slf4j
-@Order(0)
-public class DecisionKafkaInterceptor implements IDecisionInterceptor {
+@Order(2)
+@Component
+@AllArgsConstructor
+public class DecisionKafkaInterceptor implements IEventInterceptor {
 
     @Override
-    public void invoke(EvaluateEntity entity) {
+    @Async("KafkaThreadPool")
+    public void invoke(RequestEventEntity entity) {
         log.info("发送 kafka");
     }
 }

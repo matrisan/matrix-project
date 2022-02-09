@@ -1,6 +1,6 @@
 package com.matrixboot.server.compute.domain.entity;
 
-import com.matrixboot.strategy.ScenarioMetaEntity;
+import com.matrixboot.strategy.ScenarioMeta;
 import lombok.Data;
 
 /**
@@ -12,7 +12,9 @@ import lombok.Data;
  * @version 0.0.1
  */
 @Data
-public class ComputeEntity extends ScenarioMetaEntity {
+public class ComputeEntity extends ScenarioMeta {
+
+    private static final long serialVersionUID = -4429267496406783385L;
 
     private String code;
 

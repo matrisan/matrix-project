@@ -25,8 +25,9 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MatrixStrategyMetaEntity extends ScenarioMetaEntity implements Ordered, Serializable {
+public class MatrixStrategyMetaEntity extends ScenarioMeta implements Ordered, Serializable {
 
+    private static final long serialVersionUID = 2252632756131561605L;
     /**
      * 策略是否打开
      * true 为打开
@@ -86,4 +87,6 @@ public class MatrixStrategyMetaEntity extends ScenarioMetaEntity implements Orde
     public int getOrder() {
         return Objects.isNull(order) ? Ordered.LOWEST_PRECEDENCE : order;
     }
+
+
 }

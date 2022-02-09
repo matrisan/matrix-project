@@ -1,10 +1,12 @@
 package com.matrixboot.server.evaluate.infrastructure.interceptor;
 
-import com.matrixboot.server.evaluate.domain.entity.EvaluateEntity;
+import com.matrixboot.server.evaluate.domain.entity.RequestEventEntity;
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
@@ -21,16 +23,16 @@ import java.util.concurrent.TimeUnit;
  */
 
 @Slf4j
-@Order(11)
+@Order(5)
 @Component
-public class DecisionInterceptorAskVector implements IDecisionInterceptor {
+@AllArgsConstructor
+public class DecisionInterceptorAskVector implements IEventInterceptor {
 
-
-    @SneakyThrows(InterruptedException.class)
     @Override
-    public void invoke(@NotNull EvaluateEntity entity) {
+    @Async("VectorThreadPool")
+    @SneakyThrows(InterruptedException.class)
+    public void invoke(@NotNull RequestEventEntity entity) {
         log.info("查询向量");
         TimeUnit.MILLISECONDS.sleep(new Random().nextInt(100));
-        entity.getLatch().countDown();
     }
 }

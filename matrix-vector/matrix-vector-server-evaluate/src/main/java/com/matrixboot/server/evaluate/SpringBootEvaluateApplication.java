@@ -2,6 +2,7 @@ package com.matrixboot.server.evaluate;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * <p>
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author shishaodong
  * @version 0.0.1
  */
+@EnableAsync
 @SpringBootApplication
 public class SpringBootEvaluateApplication {
 

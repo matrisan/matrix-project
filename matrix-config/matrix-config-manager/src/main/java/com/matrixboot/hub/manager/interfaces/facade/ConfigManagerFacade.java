@@ -1,7 +1,5 @@
 package com.matrixboot.hub.manager.interfaces.facade;
 
-import com.matrixboot.excel.ExcelRequestBody;
-import com.matrixboot.excel.ExcelResponseBody;
 import com.matrixboot.hub.manager.application.ConfigCreateCommand;
 import com.matrixboot.hub.manager.application.ConfigDeleteCommand;
 import com.matrixboot.hub.manager.application.ConfigUpdateCommand;
@@ -18,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * <p>
@@ -71,18 +67,6 @@ public class ConfigManagerFacade {
     }
 
     /**
-     * 批量创建配置,主要是从 excel 上传配置
-     *
-     * @param command 创建配置命令
-     * @return ReturnVO
-     */
-    @PostMapping("config/excel")
-    public ReturnVO<String> configCreate(@ExcelRequestBody List<ConfigCreateCommand> command) {
-        service.configCreate(command);
-        return ReturnVO.success();
-    }
-
-    /**
      * 删除单个网站配置
      *
      * @param command 删除配置命令
@@ -94,9 +78,5 @@ public class ConfigManagerFacade {
         return ReturnVO.success();
     }
 
-    @ExcelResponseBody
-    @GetMapping("configs/excel")
-    public List<IConfigView> findAllExcel(Pageable pageable) {
-        return service.findAll(pageable).getContent();
-    }
+
 }

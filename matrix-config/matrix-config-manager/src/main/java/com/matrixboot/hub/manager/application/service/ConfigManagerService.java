@@ -13,7 +13,6 @@ import com.matrixboot.hub.manager.infrastructure.event.ConfigUpdateEvent;
 import com.matrixboot.hub.manager.infrastructure.event.IEventPublisher;
 import com.matrixboot.hub.manager.infrastructure.exception.ConfigNotFoundException;
 import com.matrixboot.hub.manager.infrastructure.transverter.MatrixConfigFactory;
-import com.matrixboot.idempotent.annotation.Idempotent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +26,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.matrixboot.hub.manager.infrastructure.event.MqTopicEnum.CONFIG_CREATE;
@@ -68,7 +66,6 @@ public class ConfigManagerService {
      *
      * @param command ConfigCreateCommand
      */
-    @Idempotent(value = "#command.domain", timeout = 60, unit = TimeUnit.SECONDS)
     public void configCreate(@Valid ConfigCreateCommand command) {
         MatrixConfigEntity save = repository.save(MatrixConfigFactory.create(command));
         log.info("配置已经保存 - {}", save);
@@ -80,7 +77,6 @@ public class ConfigManagerService {
      *
      * @param command ConfigCreateCommand
      */
-    @Idempotent(value = "@idempotentConfigCreateService.convert(#command)", timeout = 60, unit = TimeUnit.SECONDS)
     public void configCreate(@NotNull @Size(min = 1) List<@Valid ConfigCreateCommand> command) {
         List<MatrixConfigEntity> list = command.stream().map(MatrixConfigFactory::create).collect(Collectors.toList());
         List<MatrixConfigEntity> entities = repository.saveAll(list);

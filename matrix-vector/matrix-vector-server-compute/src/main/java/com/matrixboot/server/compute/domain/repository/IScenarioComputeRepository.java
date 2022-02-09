@@ -1,7 +1,7 @@
 package com.matrixboot.server.compute.domain.repository;
 
 import com.matrixboot.server.compute.domain.entity.ScenarioComputeEntity;
-import com.matrixboot.strategy.ScenarioMetaEntity;
+import com.matrixboot.strategy.ScenarioMeta;
 
 import java.util.List;
 
@@ -21,6 +21,6 @@ public interface IScenarioComputeRepository {
      * @param scenarioMetaEntity 计算实体
      * @return List
      */
-    List<ScenarioComputeEntity> findAll(ScenarioMetaEntity scenarioMetaEntity);
+    List<ScenarioComputeEntity> findAll(ScenarioMeta scenarioMetaEntity);
 
 }
